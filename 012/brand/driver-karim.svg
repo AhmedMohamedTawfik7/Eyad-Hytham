@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title">
+  <title id="title">Illustrated demo portrait of fictional driver Karim</title>
+  <defs><clipPath id="circle"><circle cx="80" cy="80" r="80"/></clipPath></defs>
+  <g clip-path="url(#circle)">
+    <rect width="160" height="160" fill="#c6d9d4"/>
+    <path d="M18 160c5-35 26-51 62-51s57 16 62 51" fill="#274b67"/>
+    <path d="M48 71c-3-31 11-48 33-48 23 0 35 17 32 49l-8 24H55z" fill="#252522"/>
+    <ellipse cx="80" cy="69" rx="29" ry="35" fill="#9d6044"/>
+    <path d="M50 63c2-28 15-41 32-41 17 0 29 11 33 33-18-1-31-7-40-18-6 12-14 21-25 26" fill="#252522"/>
+    <path d="M68 72h3m19 0h3" stroke="#28231f" stroke-linecap="round" stroke-width="3"/>
+    <path d="M72 91c5 3 11 3 16 0" fill="none" stroke="#69362e" stroke-linecap="round" stroke-width="2.5"/>
+    <path d="m64 111 16 15 16-15" fill="#f7f5ef"/>
+  </g>
+</svg>

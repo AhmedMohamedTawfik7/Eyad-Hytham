@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 88" role="img" aria-labelledby="title description">
+  <title id="title">Wasla</title>
+  <desc id="description">A connected route mark with the Wasla name.</desc>
+  <rect x="4" y="4" width="80" height="80" rx="24" fill="#0b6b63"/>
+  <path d="M22 56c10 0 13-9 19-19 6-10 10-17 25-17" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="6"/>
+  <circle cx="22" cy="56" r="6" fill="#f3bd55" stroke="#fff" stroke-width="3"/>
+  <circle cx="66" cy="20" r="6" fill="#f3bd55" stroke="#fff" stroke-width="3"/>
+  <path d="m41 39 9 5 8-7" fill="none" stroke="#f3bd55" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+  <text x="104" y="58" fill="#17312e" font-family="Inter, Segoe UI, sans-serif" font-size="46" font-weight="750" letter-spacing="-2">Wasla</text>
+</svg>

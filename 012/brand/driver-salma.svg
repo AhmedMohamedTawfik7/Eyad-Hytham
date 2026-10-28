@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title">
+  <title id="title">Illustrated demo portrait of fictional driver Salma</title>
+  <defs><clipPath id="circle"><circle cx="80" cy="80" r="80"/></clipPath></defs>
+  <g clip-path="url(#circle)">
+    <rect width="160" height="160" fill="#e7d6ad"/>
+    <path d="M18 160c5-35 26-51 62-51s57 16 62 51" fill="#a94f3e"/>
+    <path d="M44 76c-8-37 7-58 36-58 29 0 42 21 36 58l-9 33H52z" fill="#17312e"/>
+    <ellipse cx="80" cy="72" rx="29" ry="35" fill="#c58561"/>
+    <path d="M48 63c4-28 15-42 33-42 21 0 34 17 34 43-12-4-23-12-31-23-8 11-19 19-36 22" fill="#17312e"/>
+    <path d="M68 75h3m19 0h3" stroke="#3b2b26" stroke-linecap="round" stroke-width="3"/>
+    <path d="M72 93c5 4 11 4 16 0" fill="none" stroke="#8c493d" stroke-linecap="round" stroke-width="2.5"/>
+    <path d="m64 111 16 15 16-15" fill="#fff"/>
+  </g>
+</svg>

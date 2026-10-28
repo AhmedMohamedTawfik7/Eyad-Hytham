@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title">
+  <title id="title">Illustrated demo portrait of fictional driver Nour</title>
+  <defs><clipPath id="circle"><circle cx="80" cy="80" r="80"/></clipPath></defs>
+  <g clip-path="url(#circle)">
+    <rect width="160" height="160" fill="#e9c9a7"/>
+    <path d="M20 160c3-34 25-51 60-51s57 17 60 51" fill="#0b6b63"/>
+    <path d="M48 75c0-31 13-49 34-49 23 0 37 19 34 52l-7 22H54z" fill="#382d29"/>
+    <ellipse cx="80" cy="70" rx="29" ry="35" fill="#b97852"/>
+    <path d="M51 62c4-26 16-37 33-37 18 0 29 11 34 33-14-2-26-10-34-20-8 12-19 20-33 24" fill="#382d29"/>
+    <path d="M68 74h3m19 0h3" stroke="#3b2b26" stroke-linecap="round" stroke-width="3"/>
+    <path d="M73 91c5 4 10 4 15 0" fill="none" stroke="#7b3d34" stroke-linecap="round" stroke-width="2.5"/>
+    <path d="m64 111 16 15 16-15" fill="#fff"/>
+  </g>
+</svg>
