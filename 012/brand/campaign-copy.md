@@ -1,26 +1,53 @@
-# Wasla — Greater Cairo pilot campaign
+# Wasla — bilingual concept campaign
 
-## Core promise
+## Brand promise
 
-**Your goods, on their way.**
+**Your goods, your choice.**<br>
+**أغراضك، اختيارك.**
 
-**وصلة موثوقة لنقل أغراضك في القاهرة الكبرى**
+Wasla is a transport-marketplace concept for Egypt. The prototype explores
+requests, sample driver offers, and driver choices for both passenger trips
+and goods delivery. It is not a live service.
 
-Wasla is a transport-marketplace concept connecting customers who need goods moved with drivers who can carry them. Customers share item details, compare driver offers, and follow the delivery journey.
+## Short social advertisement
 
-## Social caption
+Moving a few boxes across town? Share your route, compare sample offers, and
+choose the option that fits. Explore Wasla — a delivery marketplace concept
+for Greater Cairo.
 
-Need to move a package across Greater Cairo? Wasla is being designed to help you share the item details, compare delivery offers, and keep track of the handoff.
+**بتنقل حاجاتك في القاهرة؟** شارك المسار، وقارن عروض التوصيل التجريبية، واختر
+ما يناسبك. تعرّف على وصلة — تصور لسوق توصيل في القاهرة الكبرى.
 
-**وصلة موثوقة لنقل أغراضك في القاهرة الكبرى.**
-Concept preview — service availability and pricing are not live.
+**Concept preview only. Sample drivers, portraits, fares, and availability are
+fictional. Service and prices are not live.**
 
 ## Short video voice-over
 
-“From pickup to handoff, know what is moving and who is carrying it. Share your goods, compare driver offers, and follow the journey with Wasla. A delivery marketplace concept, starting in Greater Cairo.”
+“One route. A few options. Your choice. Share what you need moved, compare
+sample driver offers, and choose what works for you. Wasla — a transport
+marketplace concept for Greater Cairo.”
 
-## Claims intentionally avoided
+Arabic:
 
-- No promise of live availability, exact delivery times, or guaranteed prices.
-- No claim that drivers are verified until a real review process has been implemented.
-- No claim that cashless payments are available until a payment provider is integrated.
+«مشوار واحد، خيارات متعددة، والاختيار لك. شارك ما تريد نقله، وقارن عروض
+السائقين التجريبية، واختر ما يناسبك. وصلة — تصور لسوق نقل في القاهرة الكبرى.»
+
+## Suggested 15-second storyboard
+
+1. **0–3 sec:** Wasla logo; “Your goods, your choice. / أغراضك، اختيارك.”
+2. **3–6 sec:** Enter pickup and drop-off; label the route “Sample request”.
+3. **6–10 sec:** Show two fictional driver profiles and clearly marked sample offers.
+4. **10–13 sec:** Choose an offer; show “Demo only — no trip is booked.”
+5. **13–15 sec:** Campaign end card and concept disclaimer.
+
+## Trust and claims
+
+- The three illustrated profile portraits in the prototype depict fictional
+  characters; they are not actual drivers or consenting people.
+- Never describe demo profiles as verified, available, or endorsed.
+- Do not promise live tracking, guaranteed fares, exact arrival times, insurance,
+  safety response, or service availability until each is actually implemented
+  and substantiated.
+- Do not imply that the concept accepts payment. The demo has no payment flow.
+- Obtain permission and appropriate releases before replacing fictional art
+  with real drivers' pictures or personal details.

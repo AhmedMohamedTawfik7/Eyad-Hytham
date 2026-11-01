@@ -1,185 +1,630 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Wasla goods-delivery marketplace concept for a Greater Cairo pilot.">
-  <title>Wasla — Greater Cairo delivery concept</title>
+  <meta name="theme-color" content="#f5f7f4">
+  <meta name="description" content="Wasla helps people compare local delivery offers. Click through a bilingual marketplace concept for Greater Cairo.">
+  <title>Wasla — local delivery, made clearer</title>
+  <link rel="icon" href="./brand/wasla-logo.svg" type="image/svg+xml">
   <style>
     :root {
       color-scheme: light;
       font-family: Inter, "Segoe UI", Tahoma, Arial, sans-serif;
-      color: #17312e;
-      background: #f4f7f5;
+      color: #172f2b;
+      background: #f5f7f4;
       font-synthesis: none;
-      --teal: #0b6b63;
-      --gold: #d89b32;
-      --muted: #627773;
-      --border: #d9e4df;
-      --surface: #fff;
+      --ink: #172f2b;
+      --muted: #64736d;
+      --teal: #087c6e;
+      --teal-dark: #075d54;
+      --mint: #e4f2eb;
+      --gold: #f2b84b;
+      --line: #e2e8e2;
+      --paper: #fff;
+      --shadow: 0 16px 45px #17312e12;
     }
     * { box-sizing: border-box; }
-    body { margin: 0; min-width: 320px; }
-    button { font: inherit; }
-    a { color: inherit; }
-    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px max(5vw, 20px); background: var(--surface); border-bottom: 1px solid var(--border); }
-    .logo { width: 174px; height: auto; }
-    .preview-tag { color: #765010; background: #fff3d9; padding: 8px 13px; border-radius: 999px; font-size: 13px; font-weight: 700; }
-    main { max-width: 1160px; margin: auto; padding: 42px 24px 70px; }
-    .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, .75fr); align-items: center; gap: 50px; }
-    .eyebrow { color: var(--teal); font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
-    h1 { max-width: 660px; margin: 14px 0; font-size: clamp(42px, 7vw, 72px); letter-spacing: -.055em; line-height: 1.02; }
-    .lede { max-width: 590px; color: var(--muted); font-size: 18px; line-height: 1.65; }
-    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
-    .button { border: 0; border-radius: 12px; padding: 13px 18px; font-weight: 750; cursor: pointer; }
-    .button-primary { background: var(--teal); color: white; }
-    .button-secondary { border: 1px solid var(--border); background: white; color: #17312e; }
-    .campaign { width: 100%; max-width: 370px; border-radius: 24px; box-shadow: 0 18px 50px #17312e18; }
-    .section { margin-top: 68px; }
-    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
-    h2 { margin: 0; font-size: clamp(25px, 4vw, 36px); letter-spacing: -.035em; }
-    .section-heading p { max-width: 520px; margin: 7px 0 0; color: var(--muted); line-height: 1.55; }
-    .driver-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-    .driver-card { padding: 20px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface); box-shadow: 0 4px 16px #17312e09; }
-    .driver-top { display: flex; align-items: center; gap: 14px; }
-    .portrait { width: 68px; height: 68px; border-radius: 50%; border: 2px solid #e3eee9; }
-    .driver-name { margin: 0; font-size: 18px; }
-    .demo-badge { display: inline-block; margin-top: 5px; border-radius: 999px; background: #fff3d9; color: #765010; padding: 4px 8px; font-size: 11px; font-weight: 750; }
-    .driver-stats { display: flex; flex-wrap: wrap; gap: 8px 15px; margin: 18px 0; color: var(--muted); font-size: 13px; }
-    .vehicle { padding: 13px 0; border-top: 1px solid #edf1ef; border-bottom: 1px solid #edf1ef; font-size: 14px; }
-    .driver-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 14px; }
-    .rating { font-weight: 750; }
-    .notice { min-height: 25px; margin-top: 18px; color: var(--teal); font-weight: 700; }
-    .trust-note { margin: 20px 0 0; padding: 14px 16px; border-left: 4px solid var(--gold); border-radius: 8px; background: #fff; color: var(--muted); font-size: 14px; line-height: 1.6; }
-    .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-    .step { padding: 18px; border-radius: 16px; background: #e8f3ef; }
-    .step b { display: block; margin-bottom: 7px; color: var(--teal); }
-    .step p { margin: 0; color: var(--muted); line-height: 1.55; }
-    footer { display: flex; justify-content: space-between; gap: 16px; margin-top: 68px; padding-top: 22px; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; }
-    dialog { width: min(440px, calc(100% - 32px)); padding: 24px; border: 1px solid var(--border); border-radius: 18px; color: #17312e; box-shadow: 0 20px 70px #17312e35; }
-    dialog::backdrop { background: #102a25a8; }
-    dialog h3 { margin-top: 0; }
-    .dialog-close { float: right; border: 0; background: transparent; font-size: 24px; cursor: pointer; }
-    @media (max-width: 760px) {
-      main { padding-top: 28px; }
-      .hero { grid-template-columns: 1fr; gap: 24px; }
-      .campaign { max-width: min(100%, 430px); justify-self: center; }
+    body { min-width: 320px; margin: 0; }
+    button, input, select, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { color: inherit; }
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 3px solid #e6a62f;
+      outline-offset: 3px;
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1120px, calc(100% - 40px)); margin-inline: auto; }
+    .topbar { position: sticky; z-index: 4; top: 0; border-bottom: 1px solid #e8ece7; background: #f8f9f6f2; backdrop-filter: blur(16px); }
+    .topbar-inner { display: flex; min-height: 74px; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; }
+    .brand img { display: block; width: 140px; height: auto; }
+    .nav { display: flex; align-items: center; gap: 26px; color: #4a5e57; font-size: 13px; font-weight: 650; }
+    .nav a:hover { color: var(--teal); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .lang-button, .icon-button { min-width: 42px; min-height: 42px; padding: 8px 11px; border: 1px solid var(--line); border-radius: 12px; background: white; cursor: pointer; font-weight: 750; }
+    .button { display: inline-flex; min-height: 46px; align-items: center; justify-content: center; gap: 8px; padding: 0 18px; border: 1px solid transparent; border-radius: 13px; cursor: pointer; font-weight: 750; transition: transform .18s ease, box-shadow .18s ease, background .18s ease; }
+    .button:hover { transform: translateY(-1px); }
+    .button-primary { background: var(--teal); color: white; box-shadow: 0 7px 16px #087c6e25; }
+    .button-primary:hover { background: var(--teal-dark); }
+    .button-outline { border-color: var(--line); background: white; }
+    .button-quiet { min-height: 38px; padding: 0 12px; border-color: var(--line); background: white; font-size: 12px; }
+    .eyebrow { color: var(--teal-dark); font-size: 11px; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
+    .hero { display: grid; min-height: 478px; grid-template-columns: 1fr .95fr; align-items: center; gap: 44px; padding-block: 42px 32px; }
+    .hero h1 { max-width: 620px; margin: 15px 0 18px; font-size: clamp(42px, 6vw, 72px); letter-spacing: -.065em; line-height: .99; }
+    .hero-copy { max-width: 520px; color: var(--muted); font-size: 16px; line-height: 1.75; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 11px; margin-top: 24px; }
+    .microcopy { margin: 14px 0 0; color: #77827d; font-size: 11px; line-height: 1.55; }
+    .hero-art { position: relative; min-height: 370px; overflow: hidden; border: 1px solid #e5eee7; border-radius: 30px; background: linear-gradient(140deg, #e8f4ed, #f8f2e6); box-shadow: var(--shadow); }
+    .hero-art::before, .hero-art::after { position: absolute; border-radius: 50%; content: ""; }
+    .hero-art::before { top: -90px; right: -80px; width: 260px; height: 260px; background: #e6c57655; }
+    .hero-art::after { bottom: -130px; left: -60px; width: 300px; height: 300px; background: #9dcbb344; }
+    .route-map { position: absolute; inset: 20px; width: calc(100% - 40px); height: calc(100% - 40px); }
+    .floating-card { position: absolute; z-index: 1; display: flex; align-items: center; gap: 12px; padding: 12px 15px; border: 1px solid #ffffffa8; border-radius: 16px; background: #fffefaed; box-shadow: 0 12px 28px #17312e18; }
+    .floating-card small { display: block; color: var(--muted); font-size: 10px; }
+    .floating-card strong { display: block; margin-top: 3px; font-size: 13px; }
+    .float-pickup { top: 35px; left: 24px; }
+    .float-offer { right: 24px; bottom: 28px; }
+    .mini-avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
+    .avatar-stack { display: flex; }
+    .avatar-stack img + img { margin-left: -10px; border: 2px solid white; }
+    .section { padding-block: 48px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 20px; }
+    .section-head h2, .section-title { margin: 8px 0 0; font-size: clamp(27px, 4vw, 38px); letter-spacing: -.045em; }
+    .section-head p { max-width: 480px; margin: 8px 0 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
+    .filter { min-height: 38px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; background: white; color: #52635c; cursor: pointer; font-size: 12px; font-weight: 700; }
+    .filter[aria-pressed="true"] { border-color: var(--teal); background: var(--teal); color: white; }
+    .market-grid { display: grid; grid-template-columns: minmax(0, 1fr) 315px; align-items: start; gap: 20px; }
+    .request-list { display: grid; gap: 12px; }
+    .request-card { padding: 19px; border: 1px solid var(--line); border-radius: 18px; background: white; box-shadow: 0 4px 18px #172f2b06; }
+    .request-top { display: flex; align-items: start; justify-content: space-between; gap: 10px; }
+    .request-type { display: flex; align-items: center; gap: 9px; color: #41554d; font-size: 12px; font-weight: 750; }
+    .type-icon { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 12px; background: var(--mint); font-size: 17px; }
+    .status { padding: 6px 9px; border-radius: 999px; background: #fff4d9; color: #85590f; font-size: 10px; font-weight: 800; white-space: nowrap; }
+    .status.active { background: #e5f4ed; color: #147053; }
+    .route { display: grid; grid-template-columns: 18px 1fr; gap: 4px 9px; margin: 17px 0 14px; font-size: 14px; font-weight: 730; }
+    .route-mark { display: flex; flex-direction: column; align-items: center; color: var(--teal); }
+    .route-mark span { width: 2px; min-height: 14px; flex: 1; margin-block: 2px; background: #c5dcd2; }
+    .route small { color: var(--muted); font-size: 10px; font-weight: 500; }
+    .request-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 13px; border-top: 1px solid #eef1ed; }
+    .request-meta { display: flex; flex-wrap: wrap; gap: 7px 13px; color: var(--muted); font-size: 11px; }
+    .fare { color: var(--ink); font-size: 16px; font-weight: 850; white-space: nowrap; }
+    .offer-panel { margin-top: 12px; padding: 13px; border-radius: 14px; background: #f7faf7; }
+    .offer-heading { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 9px; font-size: 11px; font-weight: 800; }
+    .offer-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-block: 9px; border-top: 1px solid #e8eee8; }
+    .offer-driver { display: flex; align-items: center; gap: 9px; min-width: 0; }
+    .offer-driver div { min-width: 0; }
+    .offer-driver strong, .offer-driver small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .offer-driver strong { font-size: 11px; }
+    .offer-driver small { margin-top: 3px; color: var(--muted); font-size: 9px; }
+    .offer-price { font-size: 12px; font-weight: 850; white-space: nowrap; }
+    .empty-state { padding: 32px; border: 1px dashed #cbd8d0; border-radius: 16px; color: var(--muted); text-align: center; }
+    .side-stack { display: grid; gap: 14px; }
+    .side-card { padding: 19px; border: 1px solid var(--line); border-radius: 18px; background: white; }
+    .side-card h3 { margin: 0; font-size: 15px; }
+    .side-card p { color: var(--muted); font-size: 12px; line-height: 1.65; }
+    .campaign-card { position: relative; overflow: hidden; border: 0; background: #0c584e; color: white; }
+    .campaign-card::after { position: absolute; right: -36px; bottom: -56px; width: 180px; height: 180px; border: 1px solid #ffffff28; border-radius: 50%; box-shadow: 0 0 0 24px #ffffff0c, 0 0 0 48px #ffffff0a; content: ""; }
+    .campaign-card .eyebrow { color: #f5ce75; }
+    .campaign-card h3 { max-width: 230px; margin: 12px 0; font-size: 26px; letter-spacing: -.04em; line-height: 1.1; }
+    .campaign-card p { max-width: 220px; color: #d7e9e3; }
+    .campaign-card .button { position: relative; z-index: 1; background: white; color: var(--teal-dark); }
+    .side-note { padding: 13px 15px; border-left: 3px solid var(--gold); border-radius: 8px; background: #fff9eb; color: #77633c; font-size: 11px; line-height: 1.6; }
+    .driver-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .driver-card { overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: white; }
+    .driver-cover { height: 72px; background: linear-gradient(110deg, #e3f1e9, #f6ecd2); }
+    .driver-main { padding: 0 17px 17px; }
+    .driver-head { display: flex; align-items: end; justify-content: space-between; gap: 9px; margin-top: -28px; }
+    .portrait { width: 68px; height: 68px; border: 3px solid white; border-radius: 50%; background: #e9eee9; object-fit: cover; }
+    .demo-badge { margin-bottom: 4px; padding: 5px 8px; border-radius: 999px; background: #fff3d5; color: #80560e; font-size: 9px; font-weight: 850; letter-spacing: .05em; }
+    .driver-name { margin: 12px 0 2px; font-size: 16px; }
+    .driver-city { color: var(--muted); font-size: 11px; }
+    .driver-facts { display: flex; flex-wrap: wrap; gap: 7px; margin: 13px 0; }
+    .fact { padding: 6px 8px; border-radius: 8px; background: #f5f8f5; color: #53655d; font-size: 10px; }
+    .driver-blurb { min-height: 34px; margin: 0 0 13px; color: var(--muted); font-size: 11px; line-height: 1.55; }
+    .driver-actions { display: flex; gap: 8px; }
+    .driver-actions .button { flex: 1; }
+    .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; }
+    .step { padding: 19px; border: 1px solid var(--line); border-radius: 16px; background: white; }
+    .step-num { display: grid; width: 32px; height: 32px; place-items: center; border-radius: 11px; background: var(--mint); color: var(--teal-dark); font-size: 12px; font-weight: 850; }
+    .step h3 { margin: 13px 0 6px; font-size: 14px; }
+    .step p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    footer { display: flex; justify-content: space-between; gap: 15px; padding-block: 25px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; line-height: 1.6; }
+    dialog { width: min(510px, calc(100% - 28px)); max-height: min(88vh, 760px); overflow: auto; padding: 0; border: 1px solid #dfe8df; border-radius: 22px; color: var(--ink); box-shadow: 0 28px 90px #102a2550; }
+    dialog::backdrop { background: #102a2580; backdrop-filter: blur(3px); }
+    .dialog-inner { padding: 23px; }
+    .dialog-top { display: flex; align-items: start; justify-content: space-between; gap: 15px; }
+    .dialog-top h2 { margin: 5px 0 0; font-size: 23px; }
+    .close-button { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid var(--line); border-radius: 12px; background: white; cursor: pointer; font-size: 19px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; margin-top: 18px; }
+    .field { display: grid; gap: 6px; }
+    .field.full { grid-column: 1 / -1; }
+    .field label { color: #4b5e56; font-size: 11px; font-weight: 750; }
+    .field input, .field select, .field textarea { width: 100%; min-height: 43px; padding: 10px 11px; border: 1px solid #dce5de; border-radius: 11px; background: #fff; color: var(--ink); }
+    .field textarea { min-height: 76px; resize: vertical; }
+    .form-help { margin: 13px 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
+    .form-actions { display: flex; justify-content: end; gap: 9px; margin-top: 16px; }
+    .profile-hero { display: flex; align-items: center; gap: 15px; margin: 19px 0; }
+    .profile-hero .portrait { width: 84px; height: 84px; border: 0; }
+    .profile-hero p { margin: 5px 0; color: var(--muted); font-size: 11px; }
+    .profile-summary { padding: 13px; border-radius: 12px; background: #f5f8f5; color: #53655d; font-size: 12px; line-height: 1.7; }
+    .toast { position: fixed; z-index: 9; right: 20px; bottom: 20px; max-width: min(390px, calc(100% - 40px)); padding: 13px 16px; border: 1px solid #b8d7c6; border-radius: 12px; background: #f1fbf5; color: #165c42; box-shadow: var(--shadow); font-size: 12px; }
+    .toast[hidden] { display: none; }
+    [dir="rtl"] .toast { right: auto; left: 20px; }
+    [dir="rtl"] .side-note { border-right: 3px solid var(--gold); border-left: 0; }
+    [dir="rtl"] .route-mark { grid-column: 2; grid-row: 1 / 4; }
+    [dir="rtl"] .route > span:not(.route-mark) { grid-column: 1; text-align: right; }
+    [dir="rtl"] .avatar-stack img + img { margin-right: -10px; margin-left: 0; }
+    @media (max-width: 900px) {
+      .hero { min-height: 0; grid-template-columns: 1fr 1fr; gap: 24px; }
+      .market-grid { grid-template-columns: minmax(0, 1fr) 270px; gap: 13px; }
+      .driver-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .nav { gap: 14px; }
+    }
+    @media (max-width: 680px) {
+      .wrap { width: min(100% - 28px, 520px); }
+      .topbar-inner { min-height: 64px; }
+      .brand img { width: 120px; }
+      .nav { display: none; }
+      .nav-actions .button { min-height: 40px; padding-inline: 12px; font-size: 11px; }
+      .hero { grid-template-columns: 1fr; gap: 22px; padding-top: 30px; }
+      .hero h1 { max-width: 500px; font-size: clamp(42px, 13vw, 60px); }
+      .hero-copy { font-size: 14px; }
+      .hero-art { min-height: 300px; }
+      .section { padding-block: 32px; }
+      .section-head { align-items: start; flex-direction: column; }
+      .market-grid { grid-template-columns: 1fr; }
+      .side-stack { grid-template-columns: 1fr 1fr; }
       .driver-grid { grid-template-columns: 1fr; }
-      .how-grid { grid-template-columns: 1fr; }
-      .section-heading { align-items: start; flex-direction: column; }
+      .steps { grid-template-columns: 1fr; }
+      .request-card { padding: 15px; }
+      .request-bottom { align-items: start; }
       footer { flex-direction: column; }
+    }
+    @media (max-width: 420px) {
+      .side-stack { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .float-pickup { left: 12px; }
+      .float-offer { right: 12px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
     }
   </style>
 </head>
 <body>
   <header class="topbar">
-    <img class="logo" src="./brand/wasla-logo.svg" alt="Wasla">
-    <span class="preview-tag">Prototype · Greater Cairo</span>
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#" aria-label="Wasla home"><img src="./brand/wasla-logo.svg" alt="Wasla"></a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#market" data-i18n="navMarket">Marketplace</a>
+        <a href="#drivers" data-i18n="navDrivers">Drivers</a>
+        <a href="#how" data-i18n="navHow">How it works</a>
+      </nav>
+      <div class="nav-actions">
+        <button id="language-toggle" class="lang-button" type="button" aria-label="Switch language">عربي</button>
+        <button id="new-request" class="button button-primary" type="button" data-i18n="postRequest">Post a request</button>
+      </div>
+    </div>
   </header>
-  <main>
+
+  <main class="wrap">
     <section class="hero" aria-labelledby="hero-title">
       <div>
-        <div class="eyebrow">A goods-delivery marketplace concept</div>
-        <h1 id="hero-title">Your goods, on their way.</h1>
-        <p class="lede">Share what needs moving, compare driver offers, and follow the handoff. Wasla is a concept preview for a future Greater Cairo pilot.</p>
-        <div class="actions">
-          <button class="button button-primary" type="button" data-role="customer">I need a delivery</button>
-          <button class="button button-secondary" type="button" data-role="driver">I’m a driver</button>
+        <div class="eyebrow" data-i18n="heroEyebrow">A clearer way to move what matters</div>
+        <h1 id="hero-title" data-i18n="heroTitle">Your goods,<br>on their way.</h1>
+        <p class="hero-copy" data-i18n="heroCopy">Share what needs moving. Compare real-looking sample offers in one simple place, then choose the driver that fits your delivery.</p>
+        <div class="hero-actions">
+          <button class="button button-primary" type="button" data-action="request" data-i18n="needDelivery">I need a delivery</button>
+          <a class="button button-outline" href="#drivers" data-i18n="beDriver">I’m a driver</a>
         </div>
-        <p id="role-notice" class="notice" role="status" aria-live="polite"></p>
-        <p class="trust-note">The people and portraits below are fictional illustrations for this prototype. They are not real drivers, verified accounts, or live offers.</p>
+        <p class="microcopy" data-i18n="heroDisclaimer">Concept demo only · Sample profiles and offers are fictional · No live service or payments.</p>
       </div>
-      <img class="campaign" src="./brand/cairo-campaign.svg" alt="Wasla Greater Cairo delivery concept advertisement">
-    </section>
-
-    <section class="section" aria-labelledby="drivers-title">
-      <div class="section-heading">
-        <div>
-          <div class="eyebrow">Illustrative sample profiles</div>
-          <h2 id="drivers-title">Meet the driver profiles</h2>
-          <p>Profile cards show the information customers might compare. Sample ratings and vehicles are fictional and are not endorsements.</p>
-        </div>
-        <button id="notify-button" class="button button-secondary" type="button">Test a notification</button>
-      </div>
-      <div class="driver-grid">
-        <article class="driver-card">
-          <div class="driver-top">
-            <img class="portrait" src="./brand/driver-nour.svg" alt="Illustrated demo portrait of fictional driver Nour">
-            <div><h3 class="driver-name">Nour El-Sayed</h3><span class="demo-badge">DEMO PROFILE</span></div>
-          </div>
-          <div class="driver-stats"><span>★ 4.9 sample rating</span><span>Dokki, Giza</span></div>
-          <div class="vehicle">Vehicle: Compact van · up to 8 medium boxes</div>
-          <div class="driver-actions"><span class="rating">Usually replies quickly</span><button class="button button-secondary profile-button" type="button" data-driver="Nour El-Sayed">View profile</button></div>
-        </article>
-        <article class="driver-card">
-          <div class="driver-top">
-            <img class="portrait" src="./brand/driver-karim.svg" alt="Illustrated demo portrait of fictional driver Karim">
-            <div><h3 class="driver-name">Karim Hassan</h3><span class="demo-badge">DEMO PROFILE</span></div>
-          </div>
-          <div class="driver-stats"><span>★ 4.8 sample rating</span><span>Nasr City, Cairo</span></div>
-          <div class="vehicle">Vehicle: Small cargo van · up to 12 cartons</div>
-          <div class="driver-actions"><span class="rating">Careful handling</span><button class="button button-secondary profile-button" type="button" data-driver="Karim Hassan">View profile</button></div>
-        </article>
-        <article class="driver-card">
-          <div class="driver-top">
-            <img class="portrait" src="./brand/driver-salma.svg" alt="Illustrated demo portrait of fictional driver Salma">
-            <div><h3 class="driver-name">Salma Adel</h3><span class="demo-badge">DEMO PROFILE</span></div>
-          </div>
-          <div class="driver-stats"><span>★ 5.0 sample rating</span><span>Maadi, Cairo</span></div>
-          <div class="vehicle">Vehicle: Sedan · small parcels only</div>
-          <div class="driver-actions"><span class="rating">Same-day sample</span><button class="button button-secondary profile-button" type="button" data-driver="Salma Adel">View profile</button></div>
-        </article>
+      <div class="hero-art" role="img" aria-label="Illustration of a Cairo delivery route">
+        <svg class="route-map" viewBox="0 0 600 380" aria-hidden="true">
+          <path d="M66 281c75 7 95-134 186-142s98 102 176 69 60-101 111-95" fill="none" stroke="#9bc7b4" stroke-width="24" stroke-linecap="round" stroke-dasharray="2 27"/>
+          <path d="M66 281c75 7 95-134 186-142s98 102 176 69 60-101 111-95" fill="none" stroke="#087c6e" stroke-width="3" stroke-linecap="round" stroke-dasharray="3 14"/>
+          <circle cx="66" cy="281" r="20" fill="#087c6e"/><circle cx="66" cy="281" r="7" fill="white"/>
+          <path d="M496 101c0-25 20-45 45-45s45 20 45 45c0 34-45 78-45 78s-45-44-45-78Z" fill="#f2b84b"/>
+          <circle cx="541" cy="101" r="12" fill="white"/>
+          <g transform="translate(220 184)">
+            <rect x="0" y="12" width="104" height="62" rx="12" fill="#c98244"/>
+            <path d="M104 31h37l24 25v18h-61z" fill="#e1a15e"/>
+            <path d="M116 39h20l14 16h-34z" fill="#e8f3ec"/>
+            <circle cx="34" cy="78" r="13" fill="#263e38"/><circle cx="34" cy="78" r="5" fill="#f5f7f4"/>
+            <circle cx="135" cy="78" r="13" fill="#263e38"/><circle cx="135" cy="78" r="5" fill="#f5f7f4"/>
+            <rect x="16" y="0" width="28" height="28" rx="6" fill="#eecb89"/>
+            <rect x="50" y="2" width="35" height="26" rx="6" fill="#f7e5bd"/>
+          </g>
+        </svg>
+        <div class="floating-card float-pickup"><span class="type-icon">⌖</span><span><small data-i18n="sampleRoute">Sample route</small><strong>Cairo → Giza</strong></span></div>
+        <div class="floating-card float-offer"><span class="avatar-stack"><img class="mini-avatar" src="./brand/driver-nour.svg" alt=""><img class="mini-avatar" src="./brand/driver-karim.svg" alt=""></span><span><small data-i18n="offersIn">Offers to compare</small><strong data-i18n="localDrivers">From local drivers</strong></span></div>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="steps-title">
-      <div class="section-heading">
-        <div><div class="eyebrow">How the concept works</div><h2 id="steps-title">Three clear steps</h2></div>
+    <section id="market" class="section" aria-labelledby="market-title">
+      <div class="section-head">
+        <div><div class="eyebrow" data-i18n="marketEyebrow">Explore the marketplace</div><h2 id="market-title" data-i18n="marketTitle">Find a delivery that fits</h2></div>
+        <p data-i18n="marketCopy">Browse fictional requests and compare driver offers. Try the filters, submit a sample request, or accept an offer to test the demo.</p>
       </div>
-      <div class="how-grid">
-        <article class="step"><b>1 · Describe the goods</b><p>Add an item photo, size, handling notes, and pickup and delivery points.</p></article>
-        <article class="step"><b>2 · Compare offers</b><p>Review proposed fares and suitable vehicles before selecting a driver.</p></article>
-        <article class="step"><b>3 · Follow the handoff</b><p>Track order status and confirm pickup and delivery with proof photos.</p></article>
+      <div class="filters" role="group" aria-label="Filter requests">
+        <button class="filter" type="button" data-filter="all" aria-pressed="true" data-i18n="filterAll">All requests</button>
+        <button class="filter" type="button" data-filter="freight" aria-pressed="false" data-i18n="filterFreight">Goods delivery</button>
+        <button class="filter" type="button" data-filter="passenger" aria-pressed="false" data-i18n="filterPassenger">Passenger trips</button>
+      </div>
+      <div class="market-grid">
+        <div id="request-list" class="request-list" aria-live="polite"></div>
+        <aside class="side-stack" aria-label="Marketplace information">
+          <article class="side-card campaign-card">
+            <div class="eyebrow" data-i18n="campaignEyebrow">Meet Wasla</div>
+            <h3 data-i18n="campaignTitle">The right ride starts with a choice.</h3>
+            <p data-i18n="campaignCopy">Describe your trip, compare sample offers, and choose the option that works for you.</p>
+            <button class="button" type="button" data-action="request" data-i18n="campaignCta">Try a sample request</button>
+          </article>
+          <article class="side-card">
+            <h3 data-i18n="cashTitle">Cash for this demo</h3>
+            <p data-i18n="cashCopy">Payment is handled directly between participants in this concept. No in-app payment is processed.</p>
+          </article>
+          <p class="side-note" data-i18n="safetyNote">Demo only: people, ratings, fares and availability are fictional. No driver is verified and no trip is live.</p>
+        </aside>
       </div>
     </section>
-    <footer><span>Wasla · App concept, not a live transport service.</span><span>Sample people, reviews, and offers are illustrative only.</span></footer>
+
+    <section id="drivers" class="section" aria-labelledby="drivers-title">
+      <div class="section-head">
+        <div><div class="eyebrow" data-i18n="driverEyebrow">Illustrative profiles</div><h2 id="drivers-title" data-i18n="driverTitle">Meet sample drivers</h2></div>
+        <button class="button button-outline" type="button" data-action="apply" data-i18n="applyDriver">Apply as a driver</button>
+      </div>
+      <div id="driver-grid" class="driver-grid"></div>
+    </section>
+
+    <section id="how" class="section" aria-labelledby="how-title">
+      <div class="section-head"><div><div class="eyebrow" data-i18n="howEyebrow">Simple by design</div><h2 id="how-title" data-i18n="howTitle">Three steps to get moving</h2></div></div>
+      <div class="steps">
+        <article class="step"><span class="step-num">01</span><h3 data-i18n="stepOneTitle">Tell us what’s moving</h3><p data-i18n="stepOneCopy">Share a route and a few helpful details about your trip or delivery.</p></article>
+        <article class="step"><span class="step-num">02</span><h3 data-i18n="stepTwoTitle">Compare your options</h3><p data-i18n="stepTwoCopy">Review sample driver offers and the vehicle details before you choose.</p></article>
+        <article class="step"><span class="step-num">03</span><h3 data-i18n="stepThreeTitle">Follow the plan</h3><p data-i18n="stepThreeCopy">See a simple demo status after selecting an offer. This prototype does not track live trips.</p></article>
+      </div>
+    </section>
   </main>
-  <dialog id="profile-dialog" aria-labelledby="dialog-title">
-    <button class="dialog-close" type="button" aria-label="Close profile">×</button>
-    <div class="eyebrow">Fictional demo profile</div>
-    <h3 id="dialog-title"></h3>
-    <p id="dialog-description"></p>
-    <p class="trust-note">This illustrated profile is sample content only. Real profiles require the driver’s consent, identity checks, and verified vehicle details before launch.</p>
+
+  <footer class="wrap">
+    <span data-i18n="footerLeft">Wasla · Interactive concept preview, not a live transport service.</span>
+    <span data-i18n="footerRight">Sample drivers, portraits, ratings, requests and offers are fictional.</span>
+  </footer>
+
+  <dialog id="request-dialog" aria-labelledby="request-dialog-title">
+    <div class="dialog-inner">
+      <div class="dialog-top"><div><div class="eyebrow" data-i18n="requestEyebrow">Start with the route</div><h2 id="request-dialog-title" data-i18n="requestTitle">Create a sample request</h2></div><button class="close-button" type="button" data-close aria-label="Close">×</button></div>
+      <form id="request-form">
+        <div class="form-grid">
+          <div class="field"><label for="service-type" data-i18n="serviceType">Service type</label><select id="service-type" name="serviceType" required><option value="freight" data-i18n="goodsDelivery">Goods delivery</option><option value="passenger" data-i18n="passengerTrip">Passenger trip</option></select></div>
+          <div class="field"><label for="preferred-fare" data-i18n="fareEgp">Proposed fare (EGP)</label><input id="preferred-fare" name="fare" type="number" min="1" step="1" placeholder="250" required></div>
+          <div class="field"><label for="origin" data-i18n="pickup">Pickup</label><input id="origin" name="origin" maxlength="80" placeholder="Dokki, Giza" required></div>
+          <div class="field"><label for="destination" data-i18n="dropoff">Drop-off</label><input id="destination" name="destination" maxlength="80" placeholder="Nasr City, Cairo" required></div>
+          <div class="field full"><label for="details" data-i18n="details">What are you moving?</label><textarea id="details" name="details" maxlength="240" placeholder="A few cartons, carefully packed" required></textarea></div>
+        </div>
+        <p class="form-help" data-i18n="cashFormNote">Cash is shown for this concept only. Submitting stores this sample in this browser; it does not contact a driver.</p>
+        <div class="form-actions"><button class="button button-outline" type="button" data-close data-i18n="cancel">Cancel</button><button class="button button-primary" type="submit" data-i18n="submitRequest">Add sample request</button></div>
+      </form>
+    </div>
   </dialog>
+
+  <dialog id="profile-dialog" aria-labelledby="profile-name">
+    <div class="dialog-inner">
+      <div class="dialog-top"><div><div class="eyebrow" data-i18n="profileEyebrow">Fictional demo profile</div><h2 id="profile-name"></h2></div><button class="close-button" type="button" data-close aria-label="Close">×</button></div>
+      <div class="profile-hero"><img id="profile-photo" class="portrait" src="./brand/driver-nour.svg" alt=""><div><span class="demo-badge" data-i18n="demoOnly">DEMO ONLY</span><p id="profile-city"></p></div></div>
+      <div id="profile-summary" class="profile-summary"></div>
+      <p class="form-help" data-i18n="profileNotice">Illustrated portrait and profile details are fictional. Real drivers require consent and verification before any public listing.</p>
+    </div>
+  </dialog>
+
+  <dialog id="apply-dialog" aria-labelledby="apply-title">
+    <div class="dialog-inner">
+      <div class="dialog-top"><div><div class="eyebrow" data-i18n="applyEyebrow">Driver onboarding concept</div><h2 id="apply-title" data-i18n="applyTitle">Driver interest form</h2></div><button class="close-button" type="button" data-close aria-label="Close">×</button></div>
+      <form id="apply-form">
+        <div class="form-grid">
+          <div class="field"><label for="driver-name" data-i18n="yourName">Your name</label><input id="driver-name" name="name" maxlength="80" required></div>
+          <div class="field"><label for="driver-city" data-i18n="yourCity">City</label><input id="driver-city" name="city" maxlength="80" required></div>
+          <div class="field full"><label for="vehicle" data-i18n="vehicleType">Vehicle type</label><input id="vehicle" name="vehicle" maxlength="100" required></div>
+        </div>
+        <p class="form-help" data-i18n="applyNote">This local demo only shows a confirmation. It does not collect documents or send your information anywhere.</p>
+        <div class="form-actions"><button class="button button-outline" type="button" data-close data-i18n="cancel">Cancel</button><button class="button button-primary" type="submit" data-i18n="sendInterest">Save demo application</button></div>
+      </form>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
   <script>
-    const notice = document.querySelector("#role-notice");
-    const dialog = document.querySelector("#profile-dialog");
-    const profiles = {
-      "Nour El-Sayed": "Dokki, Giza · Compact van · Sample 4.9 rating · fictional profile.",
-      "Karim Hassan": "Nasr City, Cairo · Small cargo van · Sample 4.8 rating · fictional profile.",
-      "Salma Adel": "Maadi, Cairo · Sedan for small parcels · Sample 5.0 rating · fictional profile."
-    };
-    document.querySelectorAll("[data-role]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const role = button.dataset.role === "driver" ? "driver" : "customer";
-        notice.textContent = role === "driver"
-          ? "Driver preview selected — driver onboarding would begin here."
-          : "Customer preview selected — delivery request creation would begin here.";
+    (() => {
+      "use strict";
+
+      const translations = {
+        en: {
+          navMarket: "Marketplace", navDrivers: "Drivers", navHow: "How it works", postRequest: "Post a request",
+          heroEyebrow: "A clearer way to move what matters", heroTitle: "Your goods,<br>on their way.",
+          heroCopy: "Share what needs moving. Compare sample offers in one simple place, then choose the driver that fits your delivery.",
+          needDelivery: "I need a delivery", beDriver: "I’m a driver", heroDisclaimer: "Concept demo only · Sample profiles and offers are fictional · No live service or payments.",
+          sampleRoute: "Sample route", offersIn: "Offers to compare", localDrivers: "From local drivers",
+          marketEyebrow: "Explore the marketplace", marketTitle: "Find a delivery that fits",
+          marketCopy: "Browse fictional requests and compare driver offers. Try the filters, submit a sample request, or accept an offer to test the demo.",
+          filterAll: "All requests", filterFreight: "Goods delivery", filterPassenger: "Passenger trips",
+          campaignEyebrow: "Meet Wasla", campaignTitle: "The right ride starts with a choice.",
+          campaignCopy: "Describe your trip, compare sample offers, and choose the option that works for you.",
+          campaignCta: "Try a sample request", cashTitle: "Cash for this demo",
+          cashCopy: "Payment is handled directly between participants in this concept. No in-app payment is processed.",
+          safetyNote: "Demo only: people, ratings, fares and availability are fictional. No driver is verified and no trip is live.",
+          driverEyebrow: "Illustrative profiles", driverTitle: "Meet sample drivers", applyDriver: "Apply as a driver",
+          howEyebrow: "Simple by design", howTitle: "Three steps to get moving",
+          stepOneTitle: "Tell us what’s moving", stepOneCopy: "Share a route and a few helpful details about your trip or delivery.",
+          stepTwoTitle: "Compare your options", stepTwoCopy: "Review sample driver offers and vehicle details before you choose.",
+          stepThreeTitle: "Follow the plan", stepThreeCopy: "See a simple demo status after selecting an offer. This prototype does not track live trips.",
+          footerLeft: "Wasla · Interactive concept preview, not a live transport service.",
+          footerRight: "Sample drivers, portraits, ratings, requests and offers are fictional.",
+          requestEyebrow: "Start with the route", requestTitle: "Create a sample request",
+          serviceType: "Service type", goodsDelivery: "Goods delivery", passengerTrip: "Passenger trip",
+          fareEgp: "Proposed fare (EGP)", pickup: "Pickup", dropoff: "Drop-off", details: "What are you moving?",
+          cashFormNote: "Cash is shown for this concept only. Submitting stores this sample in this browser; it does not contact a driver.",
+          cancel: "Cancel", submitRequest: "Add sample request", profileEyebrow: "Fictional demo profile", demoOnly: "DEMO ONLY",
+          profileNotice: "Illustrated portrait and profile details are fictional. Real drivers require consent and verification before any public listing.",
+          applyEyebrow: "Driver onboarding concept", applyTitle: "Driver interest form", yourName: "Your name", yourCity: "City",
+          vehicleType: "Vehicle type", applyNote: "This local demo only shows a confirmation. It does not collect documents or send your information anywhere.",
+          sendInterest: "Save demo application", offers: "driver offers", open: "Open for offers", selected: "Driver selected",
+          detailsLabel: "Details", cash: "Cash", compareOffers: "Compare offers", viewProfile: "View profile", acceptOffer: "Choose driver",
+          chosen: "Chosen", proposed: "Your proposed fare", requestSaved: "Sample request added to the marketplace.",
+          driverChosen: "Sample driver selected. No real trip was booked.", applicationSaved: "Demo application saved in this browser only.",
+          askFare: "Proposed", vehicle: "Vehicle", load: "Capacity", rating: "Sample rating", city: "Based in",
+          schedule: "Sample timing", perTrip: "estimated", empty: "No requests in this category yet. Add a sample request to see it here.",
+          profileDefault: "Local demo profile. No real driver data is being shown.",
+          copy: "Copy request", copyDone: "Sample request text copied.", copyFailed: "Copy is not available in this browser."
+        },
+        ar: {
+          navMarket: "السوق", navDrivers: "السائقون", navHow: "كيف يعمل", postRequest: "أضف طلباً",
+          heroEyebrow: "طريقة أوضح لنقل ما يهمك", heroTitle: "أغراضك،<br>في طريقها إليك.",
+          heroCopy: "صف ما تريد نقله، وقارن العروض التجريبية في مكان واحد، ثم اختر السائق المناسب لتوصيلك.",
+          needDelivery: "أحتاج إلى توصيل", beDriver: "أنا سائق", heroDisclaimer: "نسخة تجريبية · الملفات والعروض تجريبية · لا توجد خدمة أو مدفوعات حقيقية.",
+          sampleRoute: "مسار تجريبي", offersIn: "عروض للمقارنة", localDrivers: "من سائقين محليين",
+          marketEyebrow: "اكتشف السوق", marketTitle: "اختر خدمة التوصيل المناسبة",
+          marketCopy: "تصفّح الطلبات والعروض التجريبية. جرّب التصفية أو أضف طلباً تجريبياً أو اختر عرضاً لاختبار النسخة.",
+          filterAll: "كل الطلبات", filterFreight: "توصيل بضائع", filterPassenger: "رحلات ركاب",
+          campaignEyebrow: "تعرّف على وصلة", campaignTitle: "مشوارك المناسب يبدأ بالاختيار.",
+          campaignCopy: "صف رحلتك، وقارن العروض التجريبية، واختر ما يناسبك.",
+          campaignCta: "جرّب طلباً تجريبياً", cashTitle: "الدفع النقدي في النسخة التجريبية",
+          cashCopy: "يتم الدفع مباشرة بين المشاركين في هذا التصور. لا تتم معالجة أي مدفوعات داخل التطبيق.",
+          safetyNote: "نسخة تجريبية فقط: الأشخاص والتقييمات والأسعار والتوافر خيالية. لا يوجد سائق موثّق أو رحلة فعلية.",
+          driverEyebrow: "ملفات توضيحية", driverTitle: "تعرّف على سائقين تجريبيين", applyDriver: "سجّل اهتمامك كسائق",
+          howEyebrow: "ببساطة", howTitle: "ثلاث خطوات للانطلاق",
+          stepOneTitle: "أخبرنا بما تريد نقله", stepOneCopy: "أدخل المسار وبعض التفاصيل المفيدة عن الرحلة أو التوصيل.",
+          stepTwoTitle: "قارن الخيارات", stepTwoCopy: "راجع عروض السائقين التجريبية ومعلومات المركبة قبل الاختيار.",
+          stepThreeTitle: "تابع الخطة", stepThreeCopy: "شاهد حالة تجريبية بعد اختيار العرض. هذه النسخة لا تتعقب الرحلات الحقيقية.",
+          footerLeft: "وصلة · معاينة تفاعلية وليست خدمة نقل فعلية.",
+          footerRight: "السائقون والصور والتقييمات والطلبات والعروض تجريبية وخيالية.",
+          requestEyebrow: "ابدأ بالمسار", requestTitle: "إنشاء طلب تجريبي",
+          serviceType: "نوع الخدمة", goodsDelivery: "توصيل بضائع", passengerTrip: "رحلة ركاب",
+          fareEgp: "السعر المقترح (جنيه)", pickup: "نقطة الانطلاق", dropoff: "الوجهة", details: "ماذا تريد نقله؟",
+          cashFormNote: "الدفع النقدي للتوضيح فقط. يُحفظ الطلب التجريبي في هذا المتصفح ولا يتصل بأي سائق.",
+          cancel: "إلغاء", submitRequest: "إضافة طلب تجريبي", profileEyebrow: "ملف سائق خيالي", demoOnly: "تجريبي فقط",
+          profileNotice: "الصورة والبيانات توضيحية وخيالية. عرض السائقين الحقيقيين يتطلب موافقتهم والتحقق من بياناتهم.",
+          applyEyebrow: "تصور تسجيل السائقين", applyTitle: "نموذج اهتمام السائق", yourName: "الاسم", yourCity: "المدينة",
+          vehicleType: "نوع المركبة", applyNote: "تعرض هذه النسخة رسالة تأكيد فقط. لا تجمع المستندات ولا ترسل بياناتك إلى أي جهة.",
+          sendInterest: "حفظ طلب تجريبي", offers: "عروض سائقين", open: "متاح للعروض", selected: "تم اختيار سائق",
+          detailsLabel: "التفاصيل", cash: "نقداً", compareOffers: "قارن العروض", viewProfile: "عرض الملف", acceptOffer: "اختر السائق",
+          chosen: "تم الاختيار", proposed: "السعر المقترح", requestSaved: "تمت إضافة الطلب التجريبي إلى السوق.",
+          driverChosen: "تم اختيار سائق تجريبي. لم يتم حجز رحلة حقيقية.", applicationSaved: "تم حفظ الطلب التجريبي في هذا المتصفح فقط.",
+          askFare: "السعر المقترح", vehicle: "المركبة", load: "الحمولة", rating: "تقييم تجريبي", city: "المدينة",
+          schedule: "موعد تجريبي", perTrip: "تقريبي", empty: "لا توجد طلبات في هذا القسم حالياً. أضف طلباً تجريبياً لعرضه هنا.",
+          profileDefault: "ملف محلي تجريبي. لا تُعرض بيانات سائق حقيقي.",
+          copy: "نسخ الطلب", copyDone: "تم نسخ نص الطلب التجريبي.", copyFailed: "النسخ غير متاح في هذا المتصفح."
+        }
+      };
+
+      const drivers = [
+        { id: "nour", name: "Nour El-Sayed", nameAr: "نور السيد", city: "Dokki, Giza", cityAr: "الدقي، الجيزة", vehicle: "Compact van", vehicleAr: "شاحنة صغيرة", capacity: "8 medium boxes", capacityAr: "٨ صناديق متوسطة", rating: "4.9", photo: "./brand/driver-nour.svg", note: "A compact option for small home and shop deliveries.", noteAr: "خيار مناسب للتوصيلات الصغيرة للمنازل والمتاجر." },
+        { id: "karim", name: "Karim Hassan", nameAr: "كريم حسن", city: "Nasr City, Cairo", cityAr: "مدينة نصر، القاهرة", vehicle: "Small cargo van", vehicleAr: "سيارة نقل صغيرة", capacity: "12 cartons", capacityAr: "١٢ صندوقاً", rating: "4.8", photo: "./brand/driver-karim.svg", note: "Room for a few more cartons on a city route.", noteAr: "مساحة إضافية لعدد أكبر من الصناديق داخل المدينة." },
+        { id: "salma", name: "Salma Adel", nameAr: "سلمى عادل", city: "Maadi, Cairo", cityAr: "المعادي، القاهرة", vehicle: "Passenger sedan", vehicleAr: "سيارة ركاب", capacity: "Small parcels", capacityAr: "طرود صغيرة", rating: "5.0", photo: "./brand/driver-salma.svg", note: "A sedan-style sample profile for people or small parcels.", noteAr: "ملف سيارة توضيحي للركاب أو الطرود الصغيرة." }
+      ];
+
+      const sampleRequests = [
+        { id: "FR-1182", type: "freight", origin: "Dokki, Giza", originAr: "الدقي، الجيزة", destination: "Nasr City, Cairo", destinationAr: "مدينة نصر، القاهرة", detail: "6 cartons · careful handling", detailAr: "٦ صناديق · تعامل بحرص", fare: 420, timing: "Today · sample", timingAr: "اليوم · تجريبي", driverIds: ["nour", "karim"], status: "open" },
+        { id: "TR-2048", type: "passenger", origin: "Zamalek, Cairo", originAr: "الزمالك، القاهرة", destination: "New Cairo", destinationAr: "القاهرة الجديدة", detail: "2 seats · city trip", detailAr: "مقعدان · رحلة داخل المدينة", fare: 180, timing: "Today · sample", timingAr: "اليوم · تجريبي", driverIds: ["salma", "nour"], status: "open" },
+        { id: "FR-1190", type: "freight", origin: "Maadi, Cairo", originAr: "المعادي، القاهرة", destination: "6th of October City", destinationAr: "مدينة السادس من أكتوبر", detail: "Small furniture · 1 item", detailAr: "قطعة أثاث صغيرة · قطعة واحدة", fare: 650, timing: "Tomorrow · sample", timingAr: "غداً · تجريبي", driverIds: ["karim", "nour"], status: "open" }
+      ];
+
+      const state = { language: "en", filter: "all", requests: [...sampleRequests], selectedDrivers: {} };
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+      const requestDialog = $("#request-dialog");
+      const profileDialog = $("#profile-dialog");
+      const applyDialog = $("#apply-dialog");
+      let toastTimer;
+
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, (character) => ({
+          "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+        })[character]);
+      }
+
+      function text(key) {
+        return translations[state.language][key] || translations.en[key] || key;
+      }
+
+      function showToast(message) {
+        const toast = $("#toast");
+        toast.textContent = message;
+        toast.hidden = false;
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => { toast.hidden = true; }, 3600);
+      }
+
+      function driverName(driver) {
+        return state.language === "ar" ? driver.nameAr : driver.name;
+      }
+
+      function renderDrivers() {
+        $("#driver-grid").innerHTML = drivers.map((driver) => `
+          <article class="driver-card">
+            <div class="driver-cover"></div>
+            <div class="driver-main">
+              <div class="driver-head">
+                <img class="portrait" src="${driver.photo}" alt="${escapeHtml(state.language === "ar" ? `رسم توضيحي خيالي لـ ${driver.nameAr}` : `Illustrated fictional portrait of ${driver.name}`)}">
+                <span class="demo-badge">${escapeHtml(text("demoOnly"))}</span>
+              </div>
+              <h3 class="driver-name">${escapeHtml(driverName(driver))}</h3>
+              <div class="driver-city">${escapeHtml(state.language === "ar" ? driver.cityAr : driver.city)}</div>
+              <div class="driver-facts"><span class="fact">★ ${driver.rating} · ${escapeHtml(text("rating"))}</span><span class="fact">${escapeHtml(state.language === "ar" ? driver.vehicleAr : driver.vehicle)}</span></div>
+              <p class="driver-blurb">${escapeHtml(state.language === "ar" ? driver.noteAr : driver.note)}</p>
+              <div class="driver-actions"><button class="button button-quiet profile-button" type="button" data-driver="${driver.id}">${escapeHtml(text("viewProfile"))}</button><button class="button button-primary button-quiet" type="button" data-action="request">${escapeHtml(text("postRequest"))}</button></div>
+            </div>
+          </article>`).join("");
+      }
+
+      function renderRequests() {
+        const visible = state.requests.filter((request) => state.filter === "all" || request.type === state.filter);
+        const list = $("#request-list");
+        if (!visible.length) {
+          list.innerHTML = `<div class="empty-state">${escapeHtml(text("empty"))}</div>`;
+          return;
+        }
+        list.innerHTML = visible.map((request) => {
+          const isPassenger = request.type === "passenger";
+          const typeName = isPassenger ? text("passengerTrip") : text("goodsDelivery");
+          const origin = state.language === "ar" ? request.originAr || request.origin : request.origin;
+          const destination = state.language === "ar" ? request.destinationAr || request.destination : request.destination;
+          const details = state.language === "ar" ? request.detailAr || request.detail : request.detail;
+          const timing = state.language === "ar" ? request.timingAr || request.timing : request.timing;
+          const chosenId = state.selectedDrivers[request.id];
+          const offerDrivers = request.driverIds.map((id) => drivers.find((driver) => driver.id === id)).filter(Boolean);
+          const offers = offerDrivers.map((driver, index) => {
+            const price = Math.max(50, Number(request.fare) + (index === 0 ? -25 : 35));
+            const isChosen = chosenId === driver.id;
+            return `<div class="offer-row">
+              <button class="offer-driver profile-link" type="button" data-driver="${driver.id}" aria-label="${escapeHtml(text("viewProfile"))}: ${escapeHtml(driverName(driver))}">
+                <img class="mini-avatar" src="${driver.photo}" alt="">
+                <span><strong>${escapeHtml(driverName(driver))}${isChosen ? ` · ${escapeHtml(text("chosen"))}` : ""}</strong><small>${escapeHtml(state.language === "ar" ? driver.vehicleAr : driver.vehicle)} · ★ ${driver.rating}</small></span>
+              </button>
+              <span class="offer-price">${price} EGP</span>
+              ${chosenId ? "" : `<button class="button button-quiet accept-button" type="button" data-request="${request.id}" data-driver="${driver.id}">${escapeHtml(text("acceptOffer"))}</button>`}
+            </div>`;
+          }).join("");
+          const status = chosenId ? text("selected") : text("open");
+          return `<article class="request-card">
+            <div class="request-top">
+              <div class="request-type"><span class="type-icon">${isPassenger ? "↗" : "▣"}</span><span>${escapeHtml(typeName)}<small style="display:block;margin-top:3px;color:#77827d;font-weight:500">${escapeHtml(request.id)}</small></span></div>
+              <span class="status ${chosenId ? "active" : ""}">${escapeHtml(status)}</span>
+            </div>
+            <div class="route"><span class="route-mark">●<span></span>●</span><span>${escapeHtml(origin)}<small style="display:block">${escapeHtml(text("pickup"))}</small></span><span>${escapeHtml(destination)}<small style="display:block">${escapeHtml(text("dropoff"))}</small></span></div>
+            <div class="request-bottom"><div class="request-meta"><span>${escapeHtml(details)}</span><span>◷ ${escapeHtml(timing)}</span><span>${escapeHtml(text("cash"))}</span></div><span class="fare">${Number(request.fare)} EGP</span></div>
+            <div class="offer-panel"><div class="offer-heading"><span>${escapeHtml(text("compareOffers"))}</span><span>${offerDrivers.length} ${escapeHtml(text("offers"))}</span></div>${offers || `<div class="microcopy">${escapeHtml(text("empty"))}</div>`}</div>
+          </article>`;
+        }).join("");
+      }
+
+      function render() {
+        document.documentElement.lang = state.language;
+        document.documentElement.dir = state.language === "ar" ? "rtl" : "ltr";
+        $("#language-toggle").textContent = state.language === "ar" ? "EN" : "عربي";
+        $("#language-toggle").setAttribute("aria-label", state.language === "ar" ? "Switch to English" : "التبديل إلى العربية");
+        $$("[data-i18n]").forEach((element) => { element.innerHTML = text(element.dataset.i18n); });
+        renderDrivers();
+        renderRequests();
+      }
+
+      function openRequestForm() {
+        requestDialog.showModal();
+      }
+
+      document.addEventListener("click", (event) => {
+        const filter = event.target.closest("[data-filter]");
+        if (filter) {
+          state.filter = filter.dataset.filter;
+          $$(".filter").forEach((button) => button.setAttribute("aria-pressed", String(button === filter)));
+          renderRequests();
+          return;
+        }
+        if (event.target.closest("[data-action='request']") || event.target.closest("#new-request")) {
+          openRequestForm();
+          return;
+        }
+        if (event.target.closest("[data-action='apply']")) {
+          applyDialog.showModal();
+          return;
+        }
+        const profileButton = event.target.closest("[data-driver]");
+        if (profileButton && !profileButton.classList.contains("accept-button")) {
+          const driver = drivers.find((item) => item.id === profileButton.dataset.driver);
+          if (!driver) return;
+          $("#profile-name").textContent = driverName(driver);
+          $("#profile-photo").src = driver.photo;
+          $("#profile-photo").alt = state.language === "ar" ? `رسم توضيحي خيالي لـ ${driver.nameAr}` : `Illustrated fictional portrait of ${driver.name}`;
+          $("#profile-city").textContent = `${text("city")}: ${state.language === "ar" ? driver.cityAr : driver.city}`;
+          $("#profile-summary").textContent = `${text("vehicle")}: ${state.language === "ar" ? driver.vehicleAr : driver.vehicle} · ${text("load")}: ${state.language === "ar" ? driver.capacityAr : driver.capacity} · ${text("rating")}: ${driver.rating}. ${state.language === "ar" ? driver.noteAr : driver.note}`;
+          profileDialog.showModal();
+          return;
+        }
+        const accept = event.target.closest(".accept-button");
+        if (accept) {
+          state.selectedDrivers[accept.dataset.request] = accept.dataset.driver;
+          renderRequests();
+          showToast(text("driverChosen"));
+          return;
+        }
+        if (event.target.closest("[data-close]")) {
+          event.target.closest("dialog").close();
+        }
       });
-    });
-    document.querySelectorAll(".profile-button").forEach((button) => {
-      button.addEventListener("click", () => {
-        const name = button.dataset.driver;
-        if (!Object.hasOwn(profiles, name)) return;
-        document.querySelector("#dialog-title").textContent = name;
-        document.querySelector("#dialog-description").textContent = profiles[name];
-        dialog.showModal();
+
+      $("#language-toggle").addEventListener("click", () => {
+        state.language = state.language === "en" ? "ar" : "en";
+        render();
       });
-    });
-    document.querySelector(".dialog-close").addEventListener("click", () => dialog.close());
-    document.querySelector("#notify-button").addEventListener("click", () => {
-      notice.textContent = "Demo notification: a driver sent a sample offer for your delivery.";
-    });
+
+      $("#request-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const request = {
+          id: `DEMO-${Date.now().toString().slice(-5)}`,
+          type: String(formData.get("serviceType")),
+          origin: String(formData.get("origin")).trim(),
+          destination: String(formData.get("destination")).trim(),
+          detail: String(formData.get("details")).trim(),
+          fare: Number(formData.get("fare")),
+          timing: state.language === "ar" ? "طلب جديد · تجريبي" : "Just now · sample",
+          driverIds: ["nour", "karim"],
+          status: "open"
+        };
+        if (!request.origin || !request.destination || !request.detail || !Number.isFinite(request.fare) || request.fare < 1) {
+          showToast(state.language === "ar" ? "يرجى إدخال بيانات صحيحة لكل الحقول." : "Please enter valid details in every field.");
+          return;
+        }
+        state.requests.unshift(request);
+        state.filter = "all";
+        $$(".filter").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.filter === "all")));
+        event.currentTarget.reset();
+        requestDialog.close();
+        renderRequests();
+        showToast(text("requestSaved"));
+        $("#market").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      $("#apply-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (!event.currentTarget.reportValidity()) return;
+        event.currentTarget.reset();
+        applyDialog.close();
+        showToast(text("applicationSaved"));
+      });
+
+      [requestDialog, profileDialog, applyDialog].forEach((dialog) => {
+        dialog.addEventListener("click", (event) => {
+          if (event.target === dialog) dialog.close();
+        });
+      });
+
+      render();
+    })();
   </script>
 </body>
 </html>

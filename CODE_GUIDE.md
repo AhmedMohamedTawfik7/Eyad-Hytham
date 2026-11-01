@@ -1,16 +1,31 @@
 # Wasla code guide
 
-This is an editable guide to the files currently in `012/`. Edit this Markdown
-file in VS Code or GitHub to keep the explanations current.
+This guide covers the Wasla local MVP and the original prototype files in
+`012/`. Edit this Markdown file when source behavior changes.
 
 ## What this project is today
 
-These files are a collection of small Python examples and a static HTML brand
-demo, not a complete transport marketplace. There is no working account system,
-database, API, payment processing, driver verification, trip tracking, or
-production security implementation. Several files have `.kt.py` names but are
-Python files, not Kotlin source. Empty files are placeholders and currently do
-nothing.
+The repository now includes a locally testable React/TypeScript frontend and
+FastAPI marketplace API. SQLite is the local default, with PostgreSQL
+configuration available. It is a development MVP, not a production-ready
+transport service. The files under `012/` remain examples and a static brand
+demo. Several files have `.kt.py` names but are Python files, not Kotlin.
+
+## Application source
+
+| Path | Purpose |
+|---|---|
+| `services/wasla-api/src/wasla_api/main.py` | FastAPI app, health check, CORS, error mapping, and local schema initialization. |
+| `services/wasla-api/src/wasla_api/routes/` | Auth, accounts, driver application/review, requests/offers, trips, support reports, and ratings endpoints. |
+| `services/wasla-api/src/wasla_api/models.py` | SQLAlchemy persistence entities for accounts, requests, offers, trips, driver applications, ratings, and support reports. |
+| `services/wasla-api/src/wasla_api/security.py` | PBKDF2 password hashing and signed, expiring bearer tokens. |
+| `services/wasla-api/function_app.py` | Azure Functions v2 ASGI entry point for the same FastAPI app. |
+| `services/wasla-api/tests/` | API tests for auth, core marketplace lifecycle, and access/validation boundaries. |
+| `services/wasla-web/src/App.tsx` | Responsive React UI covering sign-in, request marketplace, request creation/details, driver application, trips, reports/ratings, and operations review. |
+| `services/wasla-web/src/api/client.ts` | API client with in-memory bearer token handling. |
+| `services/wasla-web/src/i18n.ts` | Arabic/English UI copy. |
+| `services/wasla-web/src/styles.css` | Responsive RTL-aware design and Wasla color tokens. |
+| `docker-compose.yml` | Optional local PostgreSQL container; SQLite requires no container. |
 
 The private GitHub repository is being used to keep this source and guide
 editable. Do not put real customer, driver, location, password, API-key, or
@@ -76,14 +91,15 @@ input into HTML. All labels, sample fares, ratings, and profile claims must
 remain clearly marked as examples until a real service and verification process
 exist.
 
-## Running and editing
+## Existing prototype source and running
 
-- Open `012/brand-demo.html` in a browser to view the static concept. It uses
+- See [README.md](./README.md) for complete local run and test instructions.
+- Open `012/brand-demo.html` in a browser to view the original static concept. It uses
   local SVG assets from `012/brand/`.
 - The Flask sample requires Flask to be installed. Run it locally with
   `python 012/build.gradle.py`, then visit `http://127.0.0.1:5000/`. Do not
   expose Flask's development server to the public internet.
-- The Python snippets can be run individually with Python. Files ending in
+- The legacy Python snippets can be run individually with Python. Files ending in
   `.kt.py` are still Python because `.py` is the final extension.
 - Update this guide whenever a file's behavior changes. For source changes,
   commit and push them to the private GitHub remote using VS Code's Source
@@ -91,9 +107,11 @@ exist.
 
 ## Security boundary
 
-Turning off Flask debug mode prevents the interactive development debugger from
-being enabled by this sample. It does **not** make this prototype production
-secure. A real marketplace still needs designed and tested authentication,
-server-side authorization, input validation, safe database access, abuse
-controls, secret management, encryption, audit/monitoring, backups, incident
-response, and privacy/legal review. No app can be guaranteed unhackable.
+The MVP uses development-oriented settings and is not an independently reviewed
+security implementation. Authentication, input validation, and server-side
+ownership checks are present but do not replace threat modeling, rate/abuse
+controls, verified identity, robust audit/monitoring, encryption and managed
+secret configuration, tested backups, incident response, and legal/privacy
+review. SQLite `create_all` is not a production migration strategy. Do not use
+this software to promise nationwide availability, emergency response, legal
+compliance, or production security. No app can be guaranteed unhackable.

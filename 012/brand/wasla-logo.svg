@@ -1,10 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 88" role="img" aria-labelledby="title description">
-  <title id="title">Wasla</title>
-  <desc id="description">A connected route mark with the Wasla name.</desc>
-  <rect x="4" y="4" width="80" height="80" rx="24" fill="#0b6b63"/>
-  <path d="M22 56c10 0 13-9 19-19 6-10 10-17 25-17" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="6"/>
-  <circle cx="22" cy="56" r="6" fill="#f3bd55" stroke="#fff" stroke-width="3"/>
-  <circle cx="66" cy="20" r="6" fill="#f3bd55" stroke="#fff" stroke-width="3"/>
-  <path d="m41 39 9 5 8-7" fill="none" stroke="#f3bd55" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
-  <text x="104" y="58" fill="#17312e" font-family="Inter, Segoe UI, sans-serif" font-size="46" font-weight="750" letter-spacing="-2">Wasla</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 92" role="img" aria-labelledby="title description">
+  <title id="title">Wasla — وصلة</title>
+  <desc id="description">A connected route links two stops beside the bilingual Wasla wordmark.</desc>
+  <defs>
+    <linearGradient id="route" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b806f"/>
+      <stop offset="1" stop-color="#075b51"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="84" height="84" rx="27" fill="url(#route)"/>
+  <path d="M25 62c13 0 14-13 22-24 7-10 13-16 29-16" fill="none" stroke="#f8fbf8" stroke-linecap="round" stroke-width="7"/>
+  <circle cx="25" cy="62" r="8" fill="#f3bd55" stroke="#fff" stroke-width="3"/>
+  <path d="M74 14v16m0-16 11 7-11 7" fill="none" stroke="#f3bd55" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+  <path d="m43 43 9 5 8-7" fill="none" stroke="#f3bd55" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+  <text x="108" y="48" fill="#17312e" font-family="Inter, Segoe UI, Tahoma, sans-serif" font-size="39" font-weight="760" letter-spacing="-2">Wasla</text>
+  <text x="110" y="74" fill="#087c6e" font-family="Tahoma, Arial, sans-serif" font-size="19" font-weight="700" direction="rtl">وصلة</text>
 </svg>
