@@ -8,6 +8,9 @@ describe("interface localization", () => {
       expect(copy[language].marketplace).toBeTruthy();
       expect(copy[language].submitReport).toBeTruthy();
       expect(copy[language].approve).toBeTruthy();
+      expect(copy[language].requestsSubtitle).toBeTruthy();
     }
+    expect(copy.en.subtitle).not.toBe(copy.en.requestsSubtitle);
+    expect(copy.ar.subtitle).not.toBe(copy.ar.requestsSubtitle);
   });
 });

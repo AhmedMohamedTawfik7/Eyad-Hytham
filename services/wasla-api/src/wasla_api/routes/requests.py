@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Query
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session, joinedload
 
 from ..db import get_db
@@ -30,24 +30,43 @@ def create_request(body: RequestInput, db: Session = Depends(get_db), account: A
 @router.get("")
 def browse_requests(
     serviceType: str | None = Query(default=None, pattern="^(passenger|freight)$"),
+    limit: int = Query(default=20, ge=1, le=50),
+    offset: int = Query(default=0, ge=0),
     db: Session = Depends(get_db), account: Account = Depends(current_account),
 ):
-    query = select(RideRequest).options(
-        joinedload(RideRequest.owner), joinedload(RideRequest.offers)
-    ).order_by(RideRequest.created_at.desc())
+    filters = []
     if account.active_driver:
-        query = query.where(RideRequest.status == "open")
+        filters.append(RideRequest.status == "open")
     else:
         # Customers only see their own requests; other customers' exact routes stay private.
-        query = query.where(RideRequest.owner_id == account.id)
+        filters.append(RideRequest.owner_id == account.id)
     if serviceType:
-        query = query.where(RideRequest.service_type == serviceType)
-    rows = db.scalars(query).unique().all()
+        filters.append(RideRequest.service_type == serviceType)
+
+    total = db.scalar(
+        select(func.count(RideRequest.id)).where(*filters)
+    ) or 0
+    offer_count = (
+        select(func.count(Offer.id))
+        .where(Offer.request_id == RideRequest.id)
+        .correlate(RideRequest)
+        .scalar_subquery()
+    )
+    query = select(RideRequest, offer_count.label("offer_count")).options(
+        joinedload(RideRequest.owner)
+    ).where(*filters).order_by(
+        RideRequest.created_at.desc(), RideRequest.id.desc()
+    ).limit(limit).offset(offset)
+    rows = db.execute(query).all()
     is_driver = account.active_driver
     return {"requests": [
-        request_view(row, include_private=(row.owner_id == account.id or is_driver))
-        for row in rows
-    ], "total": len(rows)}
+        request_view(
+            request,
+            include_private=(request.owner_id == account.id or is_driver),
+            offer_count=count,
+        )
+        for request, count in rows
+    ], "total": total}
 
 
 @router.get("/{request_id}")

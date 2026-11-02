@@ -22,7 +22,7 @@ Install dependencies once from the repository root:
 
 ```text
 python -m pip install -r services/wasla-api/requirements.txt
-npm --prefix services/wasla-web install
+npm --prefix services/wasla-web ci
 ```
 
 Then start both the API and web app with `python app.py` on Windows, or
@@ -32,11 +32,24 @@ another available port if needed. The API docs URL is printed too. Press
 **Ctrl+C** to stop both servers. Run `python app.py --check` to verify the
 prerequisites.
 
-The launcher uses local-only defaults: SQLite, an automatically generated
-development JWT secret, and `operator@example.test` as the operator account.
-The secret is regenerated after restarting, so sessions expire. Do not expose
-the development servers publicly or use these settings in production. The
-database file is created as `wasla.db` in the repository root.
+The launcher is deliberately local-only: it forces SQLite, generates a fresh
+development JWT secret, and uses `operator@example.test` as the local operator
+account, regardless of inherited production environment variables. The secret
+is regenerated after restarting, so sessions expire. Do not expose the
+development servers publicly or use this launcher for production. The database
+file is created as `wasla.db` in the repository root.
+
+In PowerShell, `cd`/`Set-Location` changes directories only; do not pass it a
+`python.exe` file path. If the `python` command is unavailable, invoke Python
+directly, for example:
+
+```powershell
+& "C:\Path\To\python.exe" -m pip install -r services/wasla-api/requirements.txt
+& "C:\Path\To\python.exe" app.py
+```
+
+Replace `C:\Path\To\python.exe` with the interpreter path reported by your
+VS Code Python environment. Run these commands from the repository root.
 
 ### Manual setup (advanced)
 
@@ -44,6 +57,7 @@ From the repository root:
 
 ```powershell
 python -m pip install -r services/wasla-api/requirements.txt
+$env:APP_ENV = "development"
 $env:JWT_SECRET = "replace-with-a-random-local-secret-at-least-32-characters"
 $env:OPERATOR_EMAILS = "operator@example.test"
 python -m uvicorn wasla_api.main:app --app-dir services/wasla-api/src --reload
@@ -65,7 +79,7 @@ own shell or secret store; the app does not load `.env` files automatically.
 ### 2. Start the web app
 
 ```powershell
-npm --prefix services/wasla-web install
+npm --prefix services/wasla-web ci
 npm --prefix services/wasla-web run dev
 ```
 
@@ -78,9 +92,10 @@ and signing out or reloading requires signing in again.
 ### Azure Functions local host
 
 After installing Azure Functions Core Tools, install the Python requirements,
-set `JWT_SECRET`, `DATABASE_URL`, and `OPERATOR_EMAILS`, then run `func start`
-from `services/wasla-api/`. The same FastAPI application is exposed through
-the Functions ASGI adapter. Running uvicorn above does not require Core Tools.
+set `APP_ENV=development`, `JWT_SECRET`, `DATABASE_URL`, and
+`OPERATOR_EMAILS`, then run `func start` from `services/wasla-api/`. The same
+FastAPI application is exposed through the Functions ASGI adapter. Running
+uvicorn above does not require Core Tools.
 
 ## Included MVP flows
 
@@ -101,7 +116,8 @@ verification, live location tracking, fleet dispatch, or nationwide service
 availability guarantee. Validate legal, privacy, safety, operational, security,
 database migration, backup, monitoring, and support readiness with qualified
 professionals before any public launch. No production security or legal
-readiness is claimed.
+readiness is claimed. See [LAUNCH_READINESS.md](./LAUNCH_READINESS.md) for the
+current no-go status and required sign-offs.
 
 ## Tests
 

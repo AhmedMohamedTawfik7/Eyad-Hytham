@@ -30,7 +30,11 @@ def offer_view(offer: Offer):
     }
 
 
-def request_view(request: RideRequest, include_private: bool = True):
+def request_view(
+    request: RideRequest,
+    include_private: bool = True,
+    offer_count: int | None = None,
+):
     return {
         "id": request.id, "ownerId": request.owner_id,
         "ownerName": request.owner.display_name, "serviceType": request.service_type,
@@ -40,7 +44,7 @@ def request_view(request: RideRequest, include_private: bool = True):
         "details": request.details, "preferredFare": request.preferred_fare,
         "paymentMethod": request.payment_method, "status": request.status,
         "createdAt": request.created_at.isoformat(),
-        "offerCount": len(request.offers),
+        "offerCount": len(request.offers) if offer_count is None else offer_count,
     }
 
 

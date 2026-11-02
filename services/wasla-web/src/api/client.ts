@@ -39,8 +39,11 @@ export async function signUp(input: {
   });
 }
 
-export const browseRequests = (type?: string) =>
-  api<{ requests: RideRequest[]; total: number }>(`/api/requests${type ? `?serviceType=${type}` : ""}`);
+export const browseRequests = (type?: string, offset = 0, limit = 20) => {
+  const params = new URLSearchParams({ offset: String(offset), limit: String(limit) });
+  if (type) params.set("serviceType", type);
+  return api<{ requests: RideRequest[]; total: number }>(`/api/requests?${params}`);
+};
 export const requestDetails = (id: string) =>
   api<{ request: RideRequest; offers: Offer[]; trip: Trip | null }>(`/api/requests/${id}`);
 export const myTrips = () => api<{ trips: Trip[] }>("/api/trips");

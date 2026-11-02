@@ -1,6 +1,6 @@
 export type Language = "ar" | "en";
 
-export const copy = {
+export const copy: Record<Language, Record<string, string>> = {
   en: {
     brand: "Wasla", tagline: "A clearer way to move things and people.",
     subtitle: "Find the right ride or cargo option, compare offers, and keep every trip organized.",
@@ -11,8 +11,9 @@ export const copy = {
     individual: "Individual", business: "Business", welcome: "Welcome back",
     loginHint: "Sign in to browse requests, make offers, and manage trips.",
     noAccount: "New to Wasla?", alreadyAccount: "Already have an account?",
-    requestsTitle: "Open transport requests", subtitle: "Compare routes and offers. Settlement is handled in cash between the participants.",
+    requestsTitle: "Open transport requests", requestsSubtitle: "Compare routes and offers. Settlement is handled in cash between the participants.",
     all: "All requests", passenger: "Passenger", freight: "Freight", offerCount: "offers",
+    loadMore: "Load more",
     route: "Route", when: "Pickup time", preferredFare: "Suggested fare", details: "Details",
     cashOnly: "Cash · paid directly", view: "View request", noRequests: "No open requests yet.",
     createTitle: "Tell us what needs to move", origin: "Pickup location", destination: "Destination",
@@ -52,8 +53,9 @@ export const copy = {
     individual: "فرد", business: "شركة", welcome: "مرحباً بعودتك",
     loginHint: "سجّل الدخول لاستعراض الطلبات وإرسال العروض ومتابعة الرحلات.",
     noAccount: "مستخدم جديد؟", alreadyAccount: "لديك حساب بالفعل؟",
-    requestsTitle: "طلبات النقل المفتوحة", subtitle: "قارن المسارات والعروض. تتم التسوية نقداً مباشرة بين الأطراف.",
+    requestsTitle: "طلبات النقل المفتوحة", requestsSubtitle: "قارن المسارات والعروض. تتم التسوية نقداً مباشرة بين الأطراف.",
     all: "كل الطلبات", passenger: "ركاب", freight: "شحن", offerCount: "عروض",
+    loadMore: "عرض المزيد",
     route: "المسار", when: "موعد الانطلاق", preferredFare: "السعر المقترح", details: "التفاصيل",
     cashOnly: "نقداً · دفع مباشر", view: "عرض الطلب", noRequests: "لا توجد طلبات مفتوحة حالياً.",
     createTitle: "ما الذي تريد نقله؟", origin: "موقع الانطلاق", destination: "الوجهة",

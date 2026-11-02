@@ -1,13 +1,11 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { FormEvent, ReactNode } from "react";
-import {
-  Button, Card, CardHeader, Field, Input, Select, Spinner, Tab, TabList, Textarea,
-} from "@fluentui/react-components";
 import { Link, Navigate, Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { api, browseRequests, myTrips, requestDetails, setSessionToken, signIn, signUp } from "./api/client";
 import { copy } from "./i18n";
 import type { Language } from "./i18n";
 import type { Account, DriverApplication, Offer, RideRequest, Trip } from "./types";
+import { Button, Card, Field, Input, Select, Spinner, Tab, TabList, Textarea } from "./ui";
 
 type Session = {
   user: Account | null;
@@ -159,21 +157,45 @@ function AuthPage({ register = false }: { register?: boolean }) {
 function MarketplacePage() {
   const { t } = useSession();
   const [filter, setFilter] = useState("");
+  const filterRef = useRef(filter);
+  filterRef.current = filter;
   const [rows, setRows] = useState<RideRequest[]>([]);
+  const [total, setTotal] = useState(0);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   useEffect(() => {
     let active = true;
     setLoading(true);
-    browseRequests(filter).then((result) => { if (active) setRows(result.requests); })
+    setError("");
+    setRows([]);
+    setTotal(0);
+    browseRequests(filter).then((result) => {
+      if (active) { setRows(result.requests); setTotal(result.total); }
+    })
       .catch((err) => { if (active) setError(err.message); })
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
   }, [filter]);
+  async function loadMore() {
+    const requestedFilter = filter;
+    setLoadingMore(true);
+    setError("");
+    try {
+      const result = await browseRequests(requestedFilter, rows.length);
+      if (filterRef.current !== requestedFilter) return;
+      setRows((current) => [...current, ...result.requests]);
+      setTotal(result.total);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("errorTitle"));
+    } finally {
+      setLoadingMore(false);
+    }
+  }
   return <section>
     <div className="page-heading">
-      <div><span className="eyebrow">WASLA MARKETPLACE</span><h1>{t("requestsTitle")}</h1><p>{t("subtitle")}</p></div>
-      <Button as={Link} to="/requests/new" appearance="primary">{t("newRequest")}</Button>
+      <div><span className="eyebrow">WASLA MARKETPLACE</span><h1>{t("requestsTitle")}</h1><p>{t("requestsSubtitle")}</p></div>
+      <Link className="button-link primary" to="/requests/new">{t("newRequest")}</Link>
     </div>
     <TabList selectedValue={filter || "all"} onTabSelect={(_e, data) => setFilter(data.value === "all" ? "" : String(data.value))}>
       <Tab value="all">{t("all")}</Tab><Tab value="passenger">{t("passenger")}</Tab><Tab value="freight">{t("freight")}</Tab>
@@ -181,7 +203,14 @@ function MarketplacePage() {
     {error && <ErrorBanner>{error}</ErrorBanner>}
     {loading ? <div className="loading"><Spinner label={t("loading")} /></div> : rows.length === 0 ?
       <EmptyState>{t("noRequests")}</EmptyState> :
-      <div className="request-grid">{rows.map((request) => <RequestCard key={request.id} request={request} />)}</div>}
+      <>
+        <div className="request-grid">{rows.map((request) => <RequestCard key={request.id} request={request} />)}</div>
+        {rows.length < total && <div className="load-more">
+          <Button appearance="secondary" onClick={loadMore} disabled={loadingMore}>
+            {loadingMore ? <Spinner size="tiny" /> : t("loadMore")}
+          </Button>
+        </div>}
+      </>}
   </section>;
 }
 
@@ -195,7 +224,7 @@ function RequestCard({ request }: { request: RideRequest }) {
       <div><dt>{t("when")}</dt><dd>{formatDate(request.schedule.scheduledAt, lang)}</dd></div>
       <div><dt>{t("preferredFare")}</dt><dd className="fare">{formatMoney(request.preferredFare, lang)}</dd></div>
     </dl>
-    <div className="card-footer"><span>{request.offerCount} {t("offerCount")}</span><Button as={Link} to={`/requests/${request.id}`} appearance="secondary">{t("view")}</Button></div>
+    <div className="card-footer"><span>{request.offerCount} {t("offerCount")}</span><Link className="button-link secondary" to={`/requests/${request.id}`}>{t("view")}</Link></div>
   </Card>;
 }
 

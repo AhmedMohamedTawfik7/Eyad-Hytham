@@ -7,6 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 os.environ["JWT_SECRET"] = "local-test-secret-not-for-production-0123456789"
+os.environ["APP_ENV"] = "test"
 
 from wasla_api.db import Base, get_db
 from wasla_api.main import app

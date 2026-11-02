@@ -1,7 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap");
-
 :root {
-  font-family: Inter, "Noto Sans Arabic", system-ui, sans-serif;
+  font-family: system-ui, "Segoe UI", Tahoma, Arial, sans-serif;
   color: #17312e;
   background: #f4f7f5;
   font-synthesis: none;
@@ -17,6 +15,18 @@
 body { margin: 0; min-width: 320px; min-height: 100vh; background: #f4f7f5; }
 button, input, select, textarea { font: inherit; }
 a { color: var(--primary); }
+.ui-button, .button-link { display: inline-flex; min-height: 36px; align-items: center; justify-content: center; gap: 8px; padding: 8px 14px; border: 1px solid transparent; border-radius: 8px; font-size: 13px; font-weight: 600; line-height: 1.25; text-decoration: none; cursor: pointer; transition: background-color .15s ease, border-color .15s ease; }
+.ui-button.primary, .button-link.primary { color: #fff; background: var(--primary); }.ui-button.primary:hover, .button-link.primary:hover { color: #fff; background: var(--primary-dark); }
+.ui-button.secondary, .button-link.secondary { color: var(--primary); background: #fff; border-color: var(--border); }.ui-button.secondary:hover, .button-link.secondary:hover { background: #f2f7f5; }
+.ui-button.subtle { color: var(--primary); background: transparent; }.ui-button.subtle:hover { background: #eaf3f0; }
+.ui-button.large { min-height: 44px; padding: 10px 18px; }
+.ui-button:disabled { opacity: .6; cursor: not-allowed; }.ui-button:focus-visible, .button-link:focus-visible, .ui-input:focus-visible, .ui-select:focus-visible, .ui-textarea:focus-visible, .ui-tab:focus-visible { outline: 3px solid #d89b3280; outline-offset: 2px; }
+.ui-card { min-width: 0; }.ui-field { display: grid; gap: 7px; color: #334b46; font-size: 12px; font-weight: 600; }.ui-label > span { color: #a13e35; }
+.ui-input, .ui-select, .ui-textarea { width: 100%; min-height: 40px; padding: 9px 11px; color: #17312e; background: #fff; border: 1px solid #cbd9d3; border-radius: 8px; font-size: 13px; }
+.ui-input:focus, .ui-select:focus, .ui-textarea:focus { border-color: var(--primary); outline: none; }.ui-textarea { min-height: 92px; resize: vertical; }.ui-hint { color: var(--muted); font-size: 11px; font-weight: 400; }
+.ui-tablist { display: flex; gap: 5px; border-bottom: 1px solid var(--border); }.ui-tab { padding: 10px 14px; color: var(--muted); background: transparent; border: 0; border-bottom: 2px solid transparent; font-size: 13px; cursor: pointer; }.ui-tab[aria-pressed="true"] { color: var(--primary); border-bottom-color: var(--primary); font-weight: 700; }
+.ui-spinner { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }.ui-spinner > span:first-child { width: 20px; height: 20px; border: 2px solid #d5e3dd; border-top-color: var(--primary); border-radius: 50%; animation: ui-spin .7s linear infinite; }.ui-spinner.tiny > span:first-child { width: 14px; height: 14px; }.ui-spinner-label { color: var(--muted); font-size: 12px; }
+@keyframes ui-spin { to { transform: rotate(360deg); } }
 .app-shell { min-height: 100vh; display: flex; flex-direction: column; }
 .topbar { position: sticky; top: 0; z-index: 3; min-height: 80px; display: flex; align-items: center; gap: 32px; padding: 14px clamp(18px, 5vw, 72px); background: rgba(255,255,255,.96); border-bottom: 1px solid var(--border); }
 .brand-lockup { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--primary); flex-shrink: 0; }
@@ -53,6 +63,7 @@ a { color: var(--primary); }
 .page-heading h1 { margin: 8px 0 6px; font-size: clamp(26px, 3vw, 34px); letter-spacing: -.035em; }
 .page-heading p { max-width: 590px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
 .request-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px; margin-top: 22px; }
+.load-more { display: flex; justify-content: center; margin: 24px 0; }
 .request-card { padding: 22px !important; border: 1px solid var(--border) !important; border-radius: 14px !important; background: white; box-shadow: 0 6px 20px #17312e08 !important; }
 .request-card:hover { border-color: #9ebdb4 !important; box-shadow: 0 12px 28px #17312e12 !important; transform: translateY(-2px); transition: .18s ease; }
 .card-kicker { display: flex; justify-content: space-between; align-items: center; gap: 8px; color: var(--muted); font-size: 10px; }

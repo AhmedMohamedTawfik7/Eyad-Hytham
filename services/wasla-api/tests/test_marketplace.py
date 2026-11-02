@@ -38,6 +38,9 @@ def test_request_offer_trip_support_and_rating_flow(client, monkeypatch):
         "fare": 175, "etaMinutes": 8, "message": "Ready",
     })
     assert offer.status_code == 201
+    browsed = client.get("/api/requests?limit=1", headers=driver_headers).json()
+    assert browsed["total"] == 1
+    assert browsed["requests"][0]["offerCount"] == 1
     trip_response = client.post(
         f"/api/requests/{request_id}/offers/{offer.json()['offer']['id']}/accept",
         headers=rider_headers,
@@ -71,3 +74,31 @@ def test_unauthorized_driver_review_and_transition_rules(client):
     })
     assert invalid.status_code == 422
     assert invalid.json()["error"]["code"] == "VALIDATION_ERROR"
+
+
+def test_request_browsing_is_paginated_and_reports_total(client):
+    _, headers = account(client, "Rider", "rider@example.test")
+    for index in range(23):
+        response = client.post("/api/requests", headers=headers, json={
+            "serviceType": "passenger", "origin": f"Origin {index}",
+            "destination": "Destination", "schedule": {"scheduledAt": "2026-11-03T10:00"},
+            "details": "Benchmark request", "preferredFare": 100,
+        })
+        assert response.status_code == 201
+
+    first_page = client.get("/api/requests?limit=10", headers=headers).json()
+    second_page = client.get("/api/requests?limit=10&offset=10", headers=headers).json()
+    last_page = client.get("/api/requests?limit=10&offset=20", headers=headers).json()
+
+    assert first_page["total"] == second_page["total"] == last_page["total"] == 23
+    assert [len(first_page["requests"]), len(second_page["requests"]),
+            len(last_page["requests"])] == [10, 10, 3]
+    ids = {row["id"] for page in (first_page, second_page, last_page)
+           for row in page["requests"]}
+    assert len(ids) == 23
+
+
+def test_request_browsing_rejects_excessive_page_size(client):
+    _, headers = account(client, "Rider", "rider@example.test")
+    response = client.get("/api/requests?limit=51", headers=headers)
+    assert response.status_code == 422

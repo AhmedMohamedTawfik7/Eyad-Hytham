@@ -24,8 +24,6 @@ WEB_PACKAGES = (
     "react",
     "react-dom",
     "react-router-dom",
-    "@fluentui/react-components",
-    "@fluentui/react-icons",
 )
 HOST = "127.0.0.1"
 API_PORT = 8000
@@ -63,11 +61,10 @@ def available_port(preferred: int) -> int:
 
 
 def configure_local_environment(api_port: int, web_port: int) -> None:
-    os.environ.setdefault("APP_ENV", "development")
-    os.environ.setdefault("DATABASE_URL", "sqlite:///./wasla.db")
-    if not os.environ.get("JWT_SECRET"):
-        os.environ["JWT_SECRET"] = secrets.token_urlsafe(48)
-    os.environ.setdefault("OPERATOR_EMAILS", "operator@example.test")
+    os.environ["APP_ENV"] = "development"
+    os.environ["DATABASE_URL"] = "sqlite:///./wasla.db"
+    os.environ["JWT_SECRET"] = secrets.token_urlsafe(48)
+    os.environ["OPERATOR_EMAILS"] = "operator@example.test"
     os.environ["CORS_ORIGINS"] = (
         f"http://localhost:{web_port},http://127.0.0.1:{web_port}"
     )

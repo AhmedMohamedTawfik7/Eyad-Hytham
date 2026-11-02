@@ -14,16 +14,26 @@ from ..serializers import account_view
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 
+def _registration_role(email: str) -> str:
+    if os.getenv("APP_ENV", "").strip().lower() not in {"development", "test"}:
+        return "customer"
+    operators = {
+        item.strip().lower()
+        for item in os.getenv("OPERATOR_EMAILS", "").split(",")
+        if item.strip()
+    }
+    return "operator" if email in operators else "customer"
+
+
 @router.post("/register", status_code=201)
 def register(body: RegisterInput, db: Session = Depends(get_db)):
     if db.scalar(select(Account).where(Account.email == body.email)):
         raise ApiError(409, "CONFLICT", "An account with this email already exists.")
-    operators = {item.strip().lower() for item in os.getenv("OPERATOR_EMAILS", "").split(",") if item.strip()}
     account = Account(
         display_name=body.displayName, email=body.email, phone=body.phone,
         password_hash=hash_password(body.password), preferred_language=body.preferredLanguage,
         account_type=body.accountType,
-        role="operator" if body.email in operators else "customer",
+        role=_registration_role(body.email),
     )
     db.add(account)
     db.commit()
