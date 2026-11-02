@@ -15,6 +15,7 @@ demo. Several files have `.kt.py` names but are Python files, not Kotlin.
 
 | Path | Purpose |
 |---|---|
+| `app.py` | Cross-platform local launcher. Starts the FastAPI API and Vite web app together; use `python app.py` or `python3 app.py`. |
 | `services/wasla-api/src/wasla_api/main.py` | FastAPI app, health check, CORS, error mapping, and local schema initialization. |
 | `services/wasla-api/src/wasla_api/routes/` | Auth, accounts, driver application/review, requests/offers, trips, support reports, and ratings endpoints. |
 | `services/wasla-api/src/wasla_api/models.py` | SQLAlchemy persistence entities for accounts, requests, offers, trips, driver applications, ratings, and support reports. |
@@ -36,7 +37,7 @@ payment data in examples or commits.
 | File | What it does | Important limitations |
 |---|---|---|
 | `012/build.gradle.py` | Creates a minimal Flask web app. `Flask(__name__)` creates the app, `@app.route("/")` maps the home URL to `home()`, and the `if __name__ == "__main__"` block starts a local server. | Despite its filename, this is Python, not a Gradle build file. Debug mode is off, but this is still Flask's development server and is not suitable for production. The only route returns fixed text. |
-| `012/app.py` | Empty placeholder. | No application code exists in this file. |
+| `012/app.py` | Compatibility entry point that delegates to the repository-root `app.py` launcher. | Use the root launcher as the main entry point. |
 | `012/kotlin.py` | A Python dictionary with an example driver name, phone, plate, and pending status. | It is static demo data, not a driver model or verification workflow. Use invented contact and vehicle details only. |
 | `012/kotlin1.py` | A Python dictionary describing a sample trip's origin, destination, weight, and price. | It has no validation, currency type, database, or trip behavior. |
 | `012/kotlin2.py` | Calculates an example owner's share from company distributable net profit. | Educational arithmetic only: it is not accounting software and does not calculate legal/tax obligations. It is not a 20% deduction from an individual fare. |

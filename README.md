@@ -16,7 +16,29 @@ Requirements: Python 3.10+ (3.11/3.12 recommended), Node.js 20+, and npm.
 SQLite is the default local database and the API creates its tables on startup
 without inserting sample user or trip data.
 
-### 1. Start the API
+### One-command launch (recommended)
+
+Install dependencies once from the repository root:
+
+```text
+python -m pip install -r services/wasla-api/requirements.txt
+npm --prefix services/wasla-web install
+```
+
+Then start both the API and web app with `python app.py` on Windows, or
+`python3 app.py` on macOS/Linux if `python` is not Python 3. Open the web URL
+printed by the launcher; it normally uses `http://127.0.0.1:5173` and selects
+another available port if needed. The API docs URL is printed too. Press
+**Ctrl+C** to stop both servers. Run `python app.py --check` to verify the
+prerequisites.
+
+The launcher uses local-only defaults: SQLite, an automatically generated
+development JWT secret, and `operator@example.test` as the operator account.
+The secret is regenerated after restarting, so sessions expire. Do not expose
+the development servers publicly or use these settings in production. The
+database file is created as `wasla.db` in the repository root.
+
+### Manual setup (advanced)
 
 From the repository root:
 
