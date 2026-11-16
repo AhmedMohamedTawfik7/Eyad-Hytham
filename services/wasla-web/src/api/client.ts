@@ -1,6 +1,11 @@
+import { Capacitor } from "@capacitor/core";
 import type { Account, Offer, RideRequest, Trip } from "../types";
 
-const API_URL = import.meta.env.VITE_API_URL ?? "http://127.0.0.1:8000";
+const defaultApiUrl = Capacitor.getPlatform() === "android"
+  ? "http://10.0.2.2:8000"
+  : "http://127.0.0.1:8000";
+const desktopApiUrl = new URLSearchParams(window.location.search).get("apiUrl");
+const API_URL = import.meta.env.VITE_API_URL ?? desktopApiUrl ?? defaultApiUrl;
 let sessionToken: string | null = null;
 
 export function setSessionToken(token: string | null) {

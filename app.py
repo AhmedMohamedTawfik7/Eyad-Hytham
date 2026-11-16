@@ -20,6 +20,7 @@ API_SOURCE = ROOT / "services" / "wasla-api" / "src"
 WEB_ROOT = ROOT / "services" / "wasla-web"
 NODE_MODULES = WEB_ROOT / "node_modules"
 VITE_CLI = WEB_ROOT / "node_modules" / "vite" / "bin" / "vite.js"
+ELECTRON_CLI = WEB_ROOT / "node_modules" / "electron" / "cli.js"
 WEB_PACKAGES = (
     "react",
     "react-dom",
@@ -66,7 +67,9 @@ def configure_local_environment(api_port: int, web_port: int) -> None:
     os.environ["JWT_SECRET"] = secrets.token_urlsafe(48)
     os.environ["OPERATOR_EMAILS"] = "operator@example.test"
     os.environ["CORS_ORIGINS"] = (
-        f"http://localhost:{web_port},http://127.0.0.1:{web_port}"
+        f"http://localhost:{web_port},http://127.0.0.1:{web_port},"
+        "http://localhost:5174,http://127.0.0.1:5174,"
+        "https://localhost,capacitor://localhost"
     )
     os.environ["VITE_API_URL"] = f"http://{HOST}:{api_port}"
 
@@ -121,8 +124,10 @@ def stop_processes(processes: list[tuple[str, subprocess.Popen[bytes]]]) -> None
             print(f"Force-stopped {name}.")
 
 
-def run_app() -> int:
+def run_app(desktop: bool = False) -> int:
     missing = missing_prerequisites()
+    if desktop and not ELECTRON_CLI.is_file():
+        missing.append("Electron is missing; install the frontend development dependencies.")
     if missing:
         print("Wasla cannot start because prerequisites are missing:")
         for item in missing:
@@ -165,23 +170,29 @@ def run_app() -> int:
         processes.append(("API", api))
         wait_for_service("API", f"http://{HOST}:{api_port}/api/health", api)
 
-        web = subprocess.Popen(
-            [
-                shutil.which("node") or "node",
-                str(VITE_CLI),
-                "--host",
-                HOST,
-                "--port",
-                str(web_port),
-                "--strictPort",
-            ],
-            cwd=WEB_ROOT,
-        )
-        processes.append(("Web app", web))
-        wait_for_port("Web app", HOST, web_port, web)
+        node = shutil.which("node") or "node"
+        if desktop:
+            build = subprocess.run([node, str(VITE_CLI), "build"], cwd=WEB_ROOT)
+            if build.returncode != 0:
+                raise RuntimeError("The desktop web bundle could not be built.")
+            os.environ["WASLA_API_URL"] = os.environ["VITE_API_URL"]
+            web = subprocess.Popen([node, str(ELECTRON_CLI), "."], cwd=WEB_ROOT)
+            web_name = "Desktop app"
+            web_port = 5174
+        else:
+            web = subprocess.Popen(
+                [node, str(VITE_CLI), "--host", HOST, "--port", str(web_port), "--strictPort"],
+                cwd=WEB_ROOT,
+            )
+            web_name = "Web app"
+        processes.append((web_name, web))
+        wait_for_port(web_name, HOST, web_port, web)
 
         print("\nWasla is running locally:")
-        print(f"  Web app: http://{HOST}:{web_port}")
+        if desktop:
+            print("  Desktop app: its native window is open")
+        else:
+            print(f"  Web app: http://{HOST}:{web_port}")
         print(f"  API docs: http://{HOST}:{api_port}/docs")
         print("Press Ctrl+C to stop both services.")
         while True:
@@ -207,6 +218,11 @@ def main() -> int:
         action="store_true",
         help="check whether the local Python and Node.js prerequisites are installed",
     )
+    parser.add_argument(
+        "--desktop",
+        action="store_true",
+        help="start the Windows desktop app with the local API",
+    )
     args = parser.parse_args()
     if args.check:
         missing = missing_prerequisites()
@@ -215,7 +231,7 @@ def main() -> int:
             return 1
         print("Python, Node.js, and frontend dependencies are ready.")
         return 0
-    return run_app()
+    return run_app(desktop=args.desktop)
 
 
 if __name__ == "__main__":

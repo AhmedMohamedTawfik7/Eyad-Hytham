@@ -89,6 +89,40 @@ a different local address. Arabic is the default UI language; use the language
 control in the header to switch to English. Session tokens are held in memory
 and signing out or reloading requires signing in again.
 
+### Installable mobile and Windows apps
+
+The React interface can also be packaged for Android and iOS with Capacitor,
+and as a Windows desktop installer with Electron. The API remains a separate
+service; start it with `python app.py` before using the desktop app. These apps
+connect to the API and do not provide offline trip creation or synchronization.
+
+From `services/wasla-web`, initialize native projects once:
+
+```powershell
+npm run app:android:setup
+npm run app:ios:setup
+```
+
+Build and synchronize the web interface into the native projects with
+`npm run app:sync`, then open Android Studio with `npm run app:android` or Xcode
+with `npm run app:ios`. Android builds require Android Studio, the Android SDK,
+Java, and Gradle. iOS builds and signing require macOS and Xcode; this repository
+can hold the iOS source project, but Windows cannot build or sign its app.
+
+The Android emulator can reach a local API at `http://10.0.2.2:8000`. For a
+local-only Android test build, set `VITE_API_URL` to that address and set
+`CAPACITOR_ALLOW_CLEARTEXT=true` before `npm run app:sync`; cleartext traffic is
+for local development only. Production apps must use a public HTTPS API URL.
+Physical devices need an API address reachable from the device. Configure it
+with `VITE_API_URL` before building; do not commit real service URLs containing
+credentials.
+
+For Windows, run `npm run desktop:run` for the desktop shell or
+`npm run desktop:package` to create an NSIS installer under `release-final/`. Start the
+local API separately before running the desktop app.
+Set `WASLA_API_URL` to the API URL before launching Electron when the local API
+does not use port 8000; the desktop shell forwards this value to the shared UI.
+
 ### Azure Functions local host
 
 After installing Azure Functions Core Tools, install the Python requirements,
