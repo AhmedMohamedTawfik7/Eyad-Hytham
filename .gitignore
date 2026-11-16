@@ -8,6 +8,7 @@ dist/
 .env.*
 !.env.example
 *.db
+wasla.db
 *.sqlite
 *.sqlite3
 .pytest_cache/

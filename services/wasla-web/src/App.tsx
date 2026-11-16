@@ -312,7 +312,7 @@ function RequestDetailsPage() {
       </Card>
       <section className="offers-column">
         <h2>{t("offersTitle")} <span className="count-pill">{data.offers.length}</span></h2>
-        {data.offers.length === 0 ? <EmptyState>{t("noRequests")}</EmptyState> : data.offers.map((item) =>
+        {data.offers.length === 0 ? <EmptyState>{t("noOffers")}</EmptyState> : data.offers.map((item) =>
           <Card key={item.id} className="offer-card">
             <div className="offer-top"><strong>{item.driverName}</strong><strong className="fare">{formatMoney(item.fare, lang)}</strong></div>
             <div className="offer-sub">{item.etaMinutes} {t("eta")}{item.message ? ` · ${item.message}` : ""}</div>
@@ -468,6 +468,8 @@ function OperationsPage() {
   const [reports, setReports] = useState<Array<{ id: string; category: string; description: string; tripId: string }>>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [review, setReview] = useState<{ id: string; decision: "approved" | "rejected" } | null>(null);
+  const [reviewNotes, setReviewNotes] = useState("");
   async function refresh() {
     setError("");
     setLoading(true);
@@ -484,12 +486,12 @@ function OperationsPage() {
     }
   }
   useEffect(() => { void refresh(); }, []);
-  async function decide(id: string, decision: "approved" | "rejected") {
-    const notes = window.prompt(t("reviewNote")) ?? "";
+  async function decide(id: string, decision: "approved" | "rejected", notes: string) {
     try {
       await api(`/api/operations/driver-applications/${id}`, {
         method: "PATCH", body: JSON.stringify({ decision, notes }),
       });
+      setReview(null);
       await refresh();
     } catch (err) { setError(err instanceof Error ? err.message : t("errorTitle")); }
   }
@@ -501,10 +503,22 @@ function OperationsPage() {
         apps.map((item) => <Card key={item.id} className="application-card">
           <div className="offer-top"><strong>{item.displayName}</strong><span className={`status-pill status-${item.status}`}>{t(item.status)}</span></div>
           <p>{item.homeCity} · {item.vehicleType} · {item.vehicleMake} {item.vehicleYear}</p>
-          {item.status === "pending" && <div className="trip-actions">
-            <Button appearance="primary" onClick={() => decide(item.id, "approved")}>{t("approve")}</Button>
-            <Button appearance="secondary" onClick={() => decide(item.id, "rejected")}>{t("reject")}</Button>
-          </div>}
+          {item.status === "pending" && <>
+            <div className="trip-actions">
+              <Button appearance="primary" onClick={() => { setReview({ id: item.id, decision: "approved" }); setReviewNotes(""); }}>{t("approve")}</Button>
+              <Button appearance="secondary" onClick={() => { setReview({ id: item.id, decision: "rejected" }); setReviewNotes(""); }}>{t("reject")}</Button>
+            </div>
+            {review?.id === item.id && <form className="inline-form" onSubmit={(event) => {
+              event.preventDefault();
+              void decide(item.id, review.decision, reviewNotes);
+            }}>
+              <Field label={t("reviewNote")}><Input value={reviewNotes} onChange={(event) => setReviewNotes(event.target.value)} maxLength={500} /></Field>
+              <div className="trip-actions">
+                <Button type="submit" appearance="primary">{review.decision === "approved" ? t("approve") : t("reject")}</Button>
+                <Button appearance="secondary" onClick={() => setReview(null)}>{t("cancel")}</Button>
+              </div>
+            </form>}
+          </>}
         </Card>)}</section>
       <section><h2>{t("support")}</h2>{reports.length === 0 ? <EmptyState>{t("noReports")}</EmptyState> :
         reports.map((report) => <Card key={report.id} className="application-card">
