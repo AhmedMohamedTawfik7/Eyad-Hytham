@@ -1,9 +1,6 @@
-import { Capacitor } from "@capacitor/core";
 import type { Account, Offer, RideRequest, Trip } from "../types";
 
-const defaultApiUrl = Capacitor.getPlatform() === "android"
-  ? "https://localhost:8000"
-  : "https://localhost:8000";
+const defaultApiUrl = "https://localhost:8000";
 const desktopApiUrl = new URLSearchParams(window.location.search).get("apiUrl");
 const API_URL = import.meta.env.VITE_API_URL ?? desktopApiUrl ?? defaultApiUrl;
 let sessionToken: string | null = null;

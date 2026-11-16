@@ -99,9 +99,9 @@ and signing out or reloading requires signing in again.
 ### Installable mobile and Windows apps
 
 The React interface can also be packaged for Android and iOS with Capacitor,
-and as a Windows desktop installer with Electron. The API remains a separate
-service; start it with `python app.py` before using the desktop app. These apps
-connect to the API and do not provide offline trip creation or synchronization.
+and as a Windows desktop installer with Electron. Run `python app.py --desktop`
+to start the API and Windows desktop app together over HTTPS. The apps connect
+to the API and do not provide offline trip creation or synchronization.
 
 From `services/wasla-web`, initialize native projects once:
 
@@ -123,12 +123,13 @@ development certificate; otherwise use a publicly trusted HTTPS API endpoint.
 There is no cleartext fallback. Physical devices need a reachable HTTPS API
 endpoint with a certificate trusted by the device. Configure it with
 `VITE_API_URL` before building; never commit private keys or credentials.
+For iOS simulator/device tests, install and trust the local development
+certificate on the Apple device, or configure a publicly trusted HTTPS API.
 
 For Windows, run `npm run desktop:run` for the desktop shell or
-`npm run desktop:package` to create an NSIS installer under `release-final/`. Start the
-local API separately before running the desktop app.
-Set `WASLA_API_URL` to the API URL before launching Electron when the local API
-does not use port 8000; the desktop shell forwards this value to the shared UI.
+`npm run desktop:package` to create an NSIS installer under `release-final/`.
+`python app.py --desktop` passes its dynamic HTTPS API URL to the desktop shell.
+When running Electron directly, set `WASLA_API_URL` to a trusted HTTPS endpoint.
 
 ### Azure Functions local host
 
