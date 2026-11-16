@@ -18,8 +18,8 @@ from .routes import accounts, auth, drivers, operations, requests, trips
 app = FastAPI(title="Wasla Marketplace API", version="0.1.0")
 allowed_origins = [origin.strip() for origin in os.getenv(
     "CORS_ORIGINS",
-    "http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,"
-    "http://127.0.0.1:5174,https://localhost,capacitor://localhost",
+    "https://localhost:5173,https://127.0.0.1:5173,https://localhost:5174,"
+    "https://127.0.0.1:5174,https://localhost",
 ).split(",") if origin.strip()]
 app.add_middleware(
     CORSMiddleware, allow_origins=allowed_origins, allow_credentials=False,

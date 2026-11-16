@@ -7,7 +7,6 @@ const config: CapacitorConfig = {
   server: {
     androidScheme: "https",
     iosScheme: "https",
-    cleartext: process.env.CAPACITOR_ALLOW_CLEARTEXT === "true",
   },
 };
 

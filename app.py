@@ -7,6 +7,7 @@ import os
 import secrets
 import shutil
 import socket
+import ssl
 import subprocess
 import sys
 import time
@@ -30,6 +31,33 @@ HOST = "127.0.0.1"
 API_PORT = 8000
 WEB_PORT = 5173
 STARTUP_TIMEOUT = 90
+CERTIFICATE_DIRECTORY = Path(
+    os.environ.get("LOCALAPPDATA", str(Path.home() / ".local" / "share"))
+) / "Wasla" / "certs"
+TLS_CERTIFICATE = Path(os.environ.get(
+    "WASLA_TLS_CERT", str(CERTIFICATE_DIRECTORY / "localhost.pem")
+))
+TLS_PRIVATE_KEY = Path(os.environ.get(
+    "WASLA_TLS_KEY", str(CERTIFICATE_DIRECTORY / "localhost.key")
+))
+
+
+def setup_tls_certificate() -> None:
+    if TLS_CERTIFICATE.is_file() and TLS_PRIVATE_KEY.is_file():
+        return
+    dotnet = shutil.which("dotnet")
+    if not dotnet:
+        raise RuntimeError("Install the .NET SDK to create a trusted local HTTPS certificate.")
+    TLS_CERTIFICATE.parent.mkdir(parents=True, exist_ok=True)
+    subprocess.run([dotnet, "dev-certs", "https", "--trust"], check=True)
+    subprocess.run([
+        dotnet, "dev-certs", "https", "--export-path", str(TLS_CERTIFICATE),
+        "--format", "Pem", "--no-password",
+    ], check=True)
+    if not TLS_CERTIFICATE.is_file() or not TLS_PRIVATE_KEY.is_file():
+        raise RuntimeError("The local HTTPS certificate could not be exported.")
+    if os.name != "nt":
+        TLS_PRIVATE_KEY.chmod(0o600)
 
 
 def missing_prerequisites() -> list[str]:
@@ -48,6 +76,8 @@ def missing_prerequisites() -> list[str]:
         package_json = NODE_MODULES.joinpath(*package.split("/"), "package.json")
         if not package_json.is_file():
             missing.append(f"Frontend dependency is missing: {package}")
+    if not TLS_CERTIFICATE.is_file() or not TLS_PRIVATE_KEY.is_file():
+        missing.append("Trusted local HTTPS certificate is missing; run `python app.py --setup-tls`.")
     return missing
 
 
@@ -67,11 +97,12 @@ def configure_local_environment(api_port: int, web_port: int) -> None:
     os.environ["JWT_SECRET"] = secrets.token_urlsafe(48)
     os.environ["OPERATOR_EMAILS"] = "operator@example.test"
     os.environ["CORS_ORIGINS"] = (
-        f"http://localhost:{web_port},http://127.0.0.1:{web_port},"
-        "http://localhost:5174,http://127.0.0.1:5174,"
-        "https://localhost,capacitor://localhost"
+        f"https://localhost:{web_port},https://127.0.0.1:{web_port},"
+        "https://localhost:5174,https://127.0.0.1:5174,https://localhost"
     )
-    os.environ["VITE_API_URL"] = f"http://{HOST}:{api_port}"
+    os.environ["VITE_API_URL"] = f"https://localhost:{api_port}"
+    os.environ["WASLA_TLS_CERT"] = str(TLS_CERTIFICATE)
+    os.environ["WASLA_TLS_KEY"] = str(TLS_PRIVATE_KEY)
 
 
 def wait_for_service(
@@ -80,12 +111,13 @@ def wait_for_service(
     process: subprocess.Popen[bytes],
 ) -> None:
     deadline = time.monotonic() + STARTUP_TIMEOUT
+    tls_context = ssl.create_default_context(cafile=str(TLS_CERTIFICATE))
     while time.monotonic() < deadline:
         return_code = process.poll()
         if return_code is not None:
             raise RuntimeError(f"{name} exited with code {return_code}; see its output above.")
         try:
-            with urlopen(url, timeout=1):
+            with urlopen(url, timeout=1, context=tls_context):
                 return
         except (OSError, URLError):
             time.sleep(0.25)
@@ -125,6 +157,11 @@ def stop_processes(processes: list[tuple[str, subprocess.Popen[bytes]]]) -> None
 
 
 def run_app(desktop: bool = False) -> int:
+    try:
+        setup_tls_certificate()
+    except (OSError, RuntimeError, subprocess.CalledProcessError) as error:
+        print(f"Wasla HTTPS setup failed: {error}", file=sys.stderr)
+        return 1
     missing = missing_prerequisites()
     if desktop and not ELECTRON_CLI.is_file():
         missing.append("Electron is missing; install the frontend development dependencies.")
@@ -164,11 +201,15 @@ def run_app(desktop: bool = False) -> int:
                 HOST,
                 "--port",
                 str(api_port),
+                "--ssl-certfile",
+                str(TLS_CERTIFICATE),
+                "--ssl-keyfile",
+                str(TLS_PRIVATE_KEY),
             ],
             cwd=ROOT,
         )
         processes.append(("API", api))
-        wait_for_service("API", f"http://{HOST}:{api_port}/api/health", api)
+        wait_for_service("API", f"https://localhost:{api_port}/api/health", api)
 
         node = shutil.which("node") or "node"
         if desktop:
@@ -192,8 +233,8 @@ def run_app(desktop: bool = False) -> int:
         if desktop:
             print("  Desktop app: its native window is open")
         else:
-            print(f"  Web app: http://{HOST}:{web_port}")
-        print(f"  API docs: http://{HOST}:{api_port}/docs")
+            print(f"  Web app: https://localhost:{web_port}")
+        print(f"  API docs: https://localhost:{api_port}/docs")
         print("Press Ctrl+C to stop both services.")
         while True:
             for name, process in processes:
@@ -223,7 +264,20 @@ def main() -> int:
         action="store_true",
         help="start the Windows desktop app with the local API",
     )
+    parser.add_argument(
+        "--setup-tls",
+        action="store_true",
+        help="trust and export the local HTTPS development certificate",
+    )
     args = parser.parse_args()
+    if args.setup_tls:
+        try:
+            setup_tls_certificate()
+        except (OSError, RuntimeError, subprocess.CalledProcessError) as error:
+            print(f"HTTPS certificate setup failed: {error}", file=sys.stderr)
+            return 1
+        print(f"Trusted HTTPS certificate exported to {TLS_CERTIFICATE}")
+        return 0
     if args.check:
         missing = missing_prerequisites()
         if missing:

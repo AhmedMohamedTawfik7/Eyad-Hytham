@@ -2,8 +2,8 @@ import { Capacitor } from "@capacitor/core";
 import type { Account, Offer, RideRequest, Trip } from "../types";
 
 const defaultApiUrl = Capacitor.getPlatform() === "android"
-  ? "http://10.0.2.2:8000"
-  : "http://127.0.0.1:8000";
+  ? "https://localhost:8000"
+  : "https://localhost:8000";
 const desktopApiUrl = new URLSearchParams(window.location.search).get("apiUrl");
 const API_URL = import.meta.env.VITE_API_URL ?? desktopApiUrl ?? defaultApiUrl;
 let sessionToken: string | null = null;
@@ -17,6 +17,9 @@ export function getSessionToken() {
 }
 
 export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
+  if (new URL(API_URL).protocol !== "https:") {
+    throw new Error("Wasla requires an HTTPS API endpoint.");
+  }
   const headers = new Headers(init.headers);
   if (init.body) headers.set("Content-Type", "application/json");
   if (sessionToken) headers.set("Authorization", `Bearer ${sessionToken}`);

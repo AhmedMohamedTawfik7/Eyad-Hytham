@@ -1,6 +1,6 @@
 const { app, BrowserWindow } = require("electron");
 const fs = require("node:fs");
-const http = require("node:http");
+const https = require("node:https");
 const path = require("node:path");
 
 const webRoot = path.resolve(__dirname, "..", "dist");
@@ -15,10 +15,13 @@ const contentTypes = {
   ".woff2": "font/woff2",
 };
 
-const server = http.createServer((request, response) => {
+const server = https.createServer({
+  cert: fs.readFileSync(process.env.WASLA_TLS_CERT),
+  key: fs.readFileSync(process.env.WASLA_TLS_KEY),
+}, (request, response) => {
   let requestPath;
   try {
-    requestPath = decodeURIComponent(new URL(request.url ?? "/", "http://localhost").pathname);
+    requestPath = decodeURIComponent(new URL(request.url ?? "/", "https://localhost").pathname);
   } catch {
     response.writeHead(400).end();
     return;
@@ -64,9 +67,9 @@ async function openApp() {
       sandbox: true,
     },
   });
-  const apiUrl = process.env.WASLA_API_URL ?? process.env.VITE_API_URL ?? "http://127.0.0.1:8000";
+  const apiUrl = process.env.WASLA_API_URL ?? process.env.VITE_API_URL ?? "https://localhost:8000";
   const query = new URLSearchParams({ platform: "desktop", apiUrl });
-  await window.loadURL(`http://127.0.0.1:5174/?${query}`);
+  await window.loadURL(`https://localhost:5174/?${query}`);
 }
 
 app.whenReady().then(openApp);
