@@ -9,6 +9,9 @@ describe("interface localization", () => {
       expect(copy[language].submitReport).toBeTruthy();
       expect(copy[language].approve).toBeTruthy();
       expect(copy[language].requestsSubtitle).toBeTruthy();
+      expect(copy[language].cash).toBeTruthy();
+      expect(copy[language].noReports).toBeTruthy();
+      expect(copy[language].retry).toBeTruthy();
     }
     expect(copy.en.subtitle).not.toBe(copy.en.requestsSubtitle);
     expect(copy.ar.subtitle).not.toBe(copy.ar.requestsSubtitle);

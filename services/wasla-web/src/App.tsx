@@ -370,10 +370,22 @@ function DriverApplicationPage() {
 }
 
 function TripsPage() {
-  const { t, user, lang } = useSession();
+  const { t, user } = useSession();
   const [trips, setTrips] = useState<Trip[]>([]);
   const [error, setError] = useState("");
-  const reload = () => myTrips().then((result) => setTrips(result.trips)).catch((err) => setError(err.message));
+  const [loading, setLoading] = useState(true);
+  async function reload() {
+    setError("");
+    setLoading(true);
+    try {
+      const result = await myTrips();
+      setTrips(result.trips);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("errorTitle"));
+    } finally {
+      setLoading(false);
+    }
+  }
   useEffect(() => { void reload(); }, []);
   async function update(trip: Trip, status?: Trip["status"], cashSettlementStatus?: "pending" | "settled") {
     setError("");
@@ -384,14 +396,14 @@ function TripsPage() {
   }
   return <section>
     <div className="page-heading"><div><span className="eyebrow">WASLA</span><h1>{t("tripsTitle")}</h1></div></div>
-    {error && <ErrorBanner>{error}</ErrorBanner>}
-    {trips.length === 0 ? <EmptyState>{t("emptyTrips")}</EmptyState> :
-      <div className="trip-list">{trips.map((trip) => <TripCard key={trip.id} trip={trip} lang={lang} user={user} onUpdate={update} />)}</div>}
+    {error && <ErrorBanner>{error} <Button appearance="secondary" onClick={() => void reload()}>{t("retry")}</Button></ErrorBanner>}
+    {loading ? <LoadingState /> : error ? null : trips.length === 0 ? <EmptyState>{t("emptyTrips")}</EmptyState> :
+      <div className="trip-list">{trips.map((trip) => <TripCard key={trip.id} trip={trip} user={user} onUpdate={update} />)}</div>}
   </section>;
 }
 
-function TripCard({ trip, lang, user, onUpdate }: {
-  trip: Trip; lang: Language; user: Account | null;
+function TripCard({ trip, user, onUpdate }: {
+  trip: Trip; user: Account | null;
   onUpdate: (trip: Trip, status?: Trip["status"], settlement?: "pending" | "settled") => void;
 }) {
   const { t } = useSession();
@@ -426,7 +438,7 @@ function TripCard({ trip, lang, user, onUpdate }: {
   };
   return <Card className="trip-card">
     <div className="trip-header"><div><span className="eyebrow">{t("tripStatus")}</span><h3>{t(trip.status)}</h3></div><span className={`status-pill status-${trip.status}`}>{t(trip.status)}</span></div>
-    <div className="trip-route"><span>{t("requestDetail")}</span><code>{trip.requestId.slice(0, 8)}</code><span>{formatMoney(0, lang) === "٠ ج.م.‏" ? "نقداً" : "Cash"}</span></div>
+    <div className="trip-route"><span>{t("requestDetail")}</span><code>{trip.requestId.slice(0, 8)}</code><span>{t("cash")}</span></div>
     {error && <ErrorBanner>{error}</ErrorBanner>}
     <div className="trip-actions">
       {user?.role === "driver" && nextStatus[trip.status] && <Button appearance="primary" onClick={() => onUpdate(trip, nextStatus[trip.status])}>{t("advanceTrip")}: {t(nextStatus[trip.status]!)}</Button>}
@@ -455,15 +467,22 @@ function OperationsPage() {
   const [apps, setApps] = useState<DriverApplication[]>([]);
   const [reports, setReports] = useState<Array<{ id: string; category: string; description: string; tripId: string }>>([]);
   const [error, setError] = useState("");
-  const refresh = async () => {
+  const [loading, setLoading] = useState(true);
+  async function refresh() {
+    setError("");
+    setLoading(true);
     try {
       const [applications, support] = await Promise.all([
         api<{ applications: DriverApplication[] }>("/api/operations/driver-applications"),
         api<{ reports: typeof reports }>("/api/operations/support-reports"),
       ]);
       setApps(applications.applications); setReports(support.reports);
-    } catch (err) { setError(err instanceof Error ? err.message : t("errorTitle")); }
-  };
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("errorTitle"));
+    } finally {
+      setLoading(false);
+    }
+  }
   useEffect(() => { void refresh(); }, []);
   async function decide(id: string, decision: "approved" | "rejected") {
     const notes = window.prompt(t("reviewNote")) ?? "";
@@ -476,8 +495,8 @@ function OperationsPage() {
   }
   return <section>
     <div className="page-heading"><div><span className="eyebrow">WASLA · OPERATIONS</span><h1>{t("reviewTitle")}</h1></div></div>
-    {error && <ErrorBanner>{error}</ErrorBanner>}
-    <div className="operations-grid">
+    {error && <ErrorBanner>{error} <Button appearance="secondary" onClick={() => void refresh()}>{t("retry")}</Button></ErrorBanner>}
+    {loading ? <LoadingState /> : error ? null : <div className="operations-grid">
       <section><h2>{t("reviewTitle")}</h2>{apps.length === 0 ? <EmptyState>{t("noApplications")}</EmptyState> :
         apps.map((item) => <Card key={item.id} className="application-card">
           <div className="offer-top"><strong>{item.displayName}</strong><span className={`status-pill status-${item.status}`}>{t(item.status)}</span></div>
@@ -487,11 +506,11 @@ function OperationsPage() {
             <Button appearance="secondary" onClick={() => decide(item.id, "rejected")}>{t("reject")}</Button>
           </div>}
         </Card>)}</section>
-      <section><h2>{t("support")}</h2>{reports.length === 0 ? <EmptyState>{t("noApplications")}</EmptyState> :
+      <section><h2>{t("support")}</h2>{reports.length === 0 ? <EmptyState>{t("noReports")}</EmptyState> :
         reports.map((report) => <Card key={report.id} className="application-card">
           <strong>{t(report.category)} · {report.tripId.slice(0, 8)}</strong><p>{report.description}</p>
         </Card>)}</section>
-    </div>
+    </div>}
   </section>;
 }
 
@@ -515,6 +534,10 @@ function PageForm({ title, children, onSubmit, error, busy, submitLabel }: {
 
 function ErrorBanner({ children }: { children: ReactNode }) {
   return <div className="error-banner" role="alert"><strong>!</strong><span>{children}</span></div>;
+}
+function LoadingState() {
+  const { t } = useSession();
+  return <div className="loading"><Spinner label={t("loading")} /></div>;
 }
 function EmptyState({ children }: { children: ReactNode }) {
   return <div className="empty-state"><span className="empty-icon">⌁</span><p>{children}</p></div>;
