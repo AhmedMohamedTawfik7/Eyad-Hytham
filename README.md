@@ -12,7 +12,8 @@ See [CODE_GUIDE.md](./CODE_GUIDE.md) for the repository map and limitations.
 
 ## Run locally
 
-Requirements: Python 3.10+ (3.11/3.12 recommended), Node.js 20+, and npm.
+Requirements: Python 3.10+ (3.11/3.12 recommended), Node.js 20+, npm, and the
+.NET SDK for the trusted local HTTPS development certificate.
 SQLite is the default local database and the API creates its tables on startup
 without inserting sample user or trip data.
 
@@ -130,6 +131,34 @@ For Windows, run `npm run desktop:run` for the desktop shell or
 `npm run desktop:package` to create an NSIS installer under `release-final/`.
 `python app.py --desktop` passes its dynamic HTTPS API URL to the desktop shell.
 When running Electron directly, set `WASLA_API_URL` to a trusted HTTPS endpoint.
+
+### Five-minute HTTPS demo
+
+From the repository root, prepare the trusted local certificate and start the
+website and API:
+
+```powershell
+python app.py --check
+python app.py
+```
+
+Open the exact HTTPS URL printed by the launcher. If Windows asks whether to
+trust the local development certificate, approve it; do not bypass browser
+certificate warnings. Use invented details and separate browser profiles or
+sign out between these roles:
+
+1. Register a customer, create a passenger request, and note the route and fare.
+2. Register a driver with a different email, submit a driver application, and
+  sign out.
+3. Sign in with `operator@example.test`, approve the driver, and sign out.
+  This local-only operator address is configured by `python app.py`.
+4. Sign in as the driver, open the customer's request, and send an offer.
+5. Sign back in as the customer, accept the offer, and show the trip on My trips.
+
+For the Windows desktop version, use `python app.py --desktop`; it starts the
+API and opens the app window with HTTPS. Stop either launcher with Ctrl+C. The
+local SQLite database persists demo records between runs; do not enter real
+personal data.
 
 ### Azure Functions local host
 

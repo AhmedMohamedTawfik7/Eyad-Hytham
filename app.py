@@ -43,10 +43,10 @@ TLS_PRIVATE_KEY = Path(os.environ.get(
 
 
 def setup_tls_certificate() -> None:
-    if TLS_CERTIFICATE.is_file() and TLS_PRIVATE_KEY.is_file():
-        return
     dotnet = shutil.which("dotnet")
     if not dotnet:
+        if TLS_CERTIFICATE.is_file() and TLS_PRIVATE_KEY.is_file():
+            return
         raise RuntimeError("Install the .NET SDK to create a trusted local HTTPS certificate.")
     TLS_CERTIFICATE.parent.mkdir(parents=True, exist_ok=True)
     subprocess.run([dotnet, "dev-certs", "https", "--trust"], check=True)
@@ -279,6 +279,11 @@ def main() -> int:
         print(f"Trusted HTTPS certificate exported to {TLS_CERTIFICATE}")
         return 0
     if args.check:
+        try:
+            setup_tls_certificate()
+        except (OSError, RuntimeError, subprocess.CalledProcessError) as error:
+            print(f"HTTPS certificate setup failed: {error}", file=sys.stderr)
+            return 1
         missing = missing_prerequisites()
         if missing:
             print("\n".join(missing), file=sys.stderr)
